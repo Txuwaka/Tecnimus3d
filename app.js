@@ -1,6 +1,6 @@
-import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.4.0';
-import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.4.0';
-import {attachMusGame} from './game-ui.js?v=0.4.0';
+import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.5.0';
+import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.5.0';
+import {attachMusGame} from './game-ui.js?v=0.5.0';
 
 const $=id=>document.getElementById(id), stage=$('stage'), host=$('scene');
 let renderer,world,camera,bootStep="graphics";
@@ -34,7 +34,7 @@ document.querySelectorAll('[data-suit]').forEach(b=>b.addEventListener('click',(
 $('cards-dialog').addEventListener('click',e=>{if(e.target===$('cards-dialog')){const r=$('cards-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeCards()}});
 
 function toast(msg){$('toast').textContent=msg;$('toast').hidden=false;clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>$('toast').hidden=true,3100)}
-function speak(name,line){$('speech').replaceChildren();const small=document.createElement('small');small.textContent=name.toUpperCase();$('speech').append(small,document.createTextNode('«'+line+'»'));$('speech').hidden=false;clearTimeout(speechTimeout);speechTimeout=setTimeout(()=>$('speech').hidden=true,4800)}
+function speak(name,line){$('speech').replaceChildren();const small=document.createElement('small');small.textContent=name.toUpperCase();$('speech').append(small,document.createTextNode('«'+line+'»'));$('speech').hidden=false;clearTimeout(speechTimeout);speechTimeout=setTimeout(()=>$('speech').hidden=true,7500)}
 function closeMenu(){$('sidebar').classList.remove('open');$('menu').setAttribute('aria-expanded','false')}
 function updateModeUI(){for(const m of ['inspect','walk']){const b=$(m+'-mode');b.classList.toggle('active',mode===m);b.setAttribute('aria-pressed',String(mode===m))}$('walk-pad').hidden=mode!=='walk';host.classList.toggle('walking',mode==='walk');$('control-hint').textContent=mode==='walk'?'WASD / flechas para caminar · Arrastra para mirar':'Arrastra para girar · Rueda para acercar'}
 function setView(id){mode='inspect';activeView=id;camera.fov=id==='seat'?playerViewFov(camera.aspect):40;world.setPlayerView(id==='seat');camera.updateProjectionMatrix();desiredPosition.fromArray(VIEWS[id].position);desiredTarget.fromArray(VIEWS[id].target);if(id==='general')fitGeneralView();transition=true;updateModeUI();document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===id);b.setAttribute('aria-pressed',String(b.dataset.view===id))});closeMenu();if(id==='bar')inspect('javiel',false);else if(id==='table')inspect('table',false);else if(id==='seat')inspect('txuwa',false);else inspect(null,false);host.focus({preventScroll:true})}

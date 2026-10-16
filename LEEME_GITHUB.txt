@@ -1,5 +1,12 @@
-TECNIMUSONLINE 3D - ALPHA 0.4 JUGABLE
+TECNIMUSONLINE 3D - ALPHA 0.5 JUGABLE
 16/10/2026
+
+RITMO TRANQUILO
+
+La espera entre decisiones y acciones pasa a 3 segundos.
+Corto mus, quiero y ordago permanecen 4,5 segundos antes de continuar.
+Las señas duran 5,5 segundos y los bocadillos hasta 7,5 segundos.
+Cuando te toca a ti, puedes pensar sin limite de tiempo.
 
 AHORA YA SE PUEDE JUGAR
 
