@@ -1,68 +1,77 @@
-TECNIMUSONLINE 3D - VERSION PARA GITHUB PAGES
-Versión 0.2 - 16/10/2026
+TECNIMUSONLINE 3D - ALPHA 0.3 JUGABLE
+16/10/2026
 
-Este paquete contiene el bar 3D interactivo con nuestras 40 cartas.
-Puedes inspeccionar personajes, pasear, repartir y hacer una seña.
-Es un prototipo visual: todavía no incluye las reglas ni el multijugador.
+AHORA YA SE PUEDE JUGAR
 
-SUBIR A GITHUB
+Pulsa Jugar al mus. Tú y Lola sois pareja frente a Nico y Bruno.
+Tus tres compañeros de mesa están controlados por la máquina.
+La partida se juega a 40 piedras con la baraja de Tecnimus.
 
-1. Descomprime el ZIP en tu ordenador.
-2. Crea un repositorio de pruebas: tecnimus-3d-prueba.
-3. En el repositorio entra en Add file > Upload files.
-4. Arrastra TODOS los archivos y carpetas extraídos.
+- MUS: selecciona al menos una carta para descartarla y pulsa Mus.
+- CORTO MUS: empieza los lances con las cartas actuales.
+- GRANDE, CHICA, PARES y JUEGO/PUNTO: los botones aparecen en tu turno.
+- ENVIDO: el campo Piedras/subida indica la cantidad inicial.
+- SUBO: ese mismo campo indica cuánto añades a la apuesta actual.
+- ÓRDAGO: puedes lanzarlo de inicio o ante un envite normal.
+- QUIERO / NO QUIERO: responde a la apuesta de la otra pareja.
+- MOSTRAR CARTAS: descubre las manos y cuenta las piedras.
+- SIGUIENTE MANO: continúa con la mano a la derecha.
+- HACER UNA SEÑA: aparecen las disponibles para tus cartas; Lola responde.
+- EXPLORAR: pausa la partida para recorrer el bar.
+- VOLVER A LA PARTIDA: continúa desde donde la dejaste.
+- NUEVA: reinicia la partida tras confirmación.
+
+ACTUALIZAR EL REPOSITORIO DEL BOCETO
+
+1. Descomprime este ZIP.
+2. Abre en GitHub el repositorio donde subiste el boceto 3D.
+3. Pulsa Add file > Upload files.
+4. Arrastra TODO el contenido extraído, incluidas assets y vendor.
    index.html debe quedar directamente en la raíz del repositorio.
-   Conserva las carpetas assets y vendor con sus archivos dentro.
-5. Pulsa Commit changes para guardar la subida.
+5. Pulsa Commit changes.
+6. Espera a que termine el despliegue de Pages y abre tu web.
+7. Si sigue apareciendo el boceto anterior, pulsa Ctrl+F5.
+
+Los nuevos módulos game-ui.js, mus-game.js y mus-rules.js son necesarios.
+Mantén todos los módulos del ZIP junto a index.html.
+No se necesitan npm, compilación, claves ni un servidor de partidas.
+
+Si Pages todavía no está activado y decides publicarlo:
+Settings > Pages > Deploy from a branch > main > /(root) > Save.
 
 VISIBILIDAD
 
-Guardar los archivos en un repositorio privado permite conservar el código
-privado. Activar GitHub Pages en una cuenta personal normal publica una
-web accesible en Internet, incluso si el plan permite un repositorio privado.
-Con GitHub Free, Pages requiere un repositorio público.
-Este paquete no incorpora el control de acceso del prototipo privado alojado.
+GitHub Pages normalmente hace accesible la web públicamente, aunque el
+plan permita un repositorio privado. Con GitHub Free requiere un repositorio
+público. Esta copia no incluye el control de acceso del alojamiento privado.
+El enlace privado original sigue protegido por su alojamiento.
 
-Si decides publicarlo para probarlo con GitHub Pages:
+PROBAR SOLO EN TU ORDENADOR
 
-6. Entra en Settings > Pages.
-7. En Source selecciona Deploy from a branch.
-8. En Branch elige main y carpeta /(root).
-9. Pulsa Save. Cuando termine el despliegue, pulsa Visit site.
-
-La dirección tendrá esta forma:
-https://TU_USUARIO.github.io/tecnimus-3d-prueba/
-
-Los archivos ya usan rutas relativas compatibles con esa dirección.
-No necesitas npm, compilación, claves ni un servidor de partidas.
-
-SI PREFIERES PROBARLO PRIVADO EN TU ORDENADOR
-
-En Linux Mint, abre una terminal dentro de la carpeta descomprimida y escribe:
+En Linux Mint, abre una terminal en la carpeta extraída y ejecuta:
 python3 -m http.server 8000 --bind 127.0.0.1
 
-Abre después http://localhost:8000 en tu navegador.
-Para terminar, pulsa Ctrl+C en la terminal.
-Usa el servidor local: abrir index.html directamente puede bloquear módulos.
+Abre http://localhost:8000 y pulsa Jugar al mus.
+Para terminar el servidor local: Ctrl+C.
+Abrir index.html directamente puede bloquear los módulos del navegador.
 
-CONTROLES
+ALCANCE DE ESTA VERSIÓN
 
-- Arrastrar: girar; rueda: acercar o alejar.
-- Botones laterales: vistas de cámara y personajes.
-- Pasear: WASD, flechas o botones táctiles; arrastrar para mirar.
-- Cartas: ver tu mano o la baraja completa por palos.
-- Repartir: nueva mano de muestra, sin cartas duplicadas.
-- Hacer una seña: Lola responde.
-- Altavoz: activar o silenciar ambiente sonoro.
+Partida local con IA básica, sin salas online, servidor ni chat de voz.
+La lógica del mus procede de la versión guardada del juego del 07/10/2026.
+La escena y los controles son la primera integración 3D jugable.
+No se ha modificado ni subido nada automáticamente a tu GitHub.
 
 VALIDACIÓN
 
-Las pruebas de geometría e interacción en un DOM simulado pasan.
-Se han revisado las imágenes de las cartas y las rutas del paquete.
-No se ha comprobado este paquete en un navegador real ni desplegado en GitHub.
+El motor pasa 100 partidas simuladas: 793 manos y más de 33.000 transiciones.
+También pasan las pruebas de escena y una mano completa desde los controles
+de interfaz en un DOM simulado. Se comprueban cartas sin duplicados, turnos,
+descartes, reenvites, respuesta de la pareja, puntuación y pausa.
+La revisión en un navegador real continúa pendiente en este entorno.
 
-Dependencia: Three.js r160, licencia MIT incluida en vendor.
+Three.js r160, licencia MIT incluida en vendor.
 
-Documentación oficial:
+Documentación de GitHub Pages:
 https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
 https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
