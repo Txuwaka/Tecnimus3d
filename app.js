@@ -1,7 +1,7 @@
-import {createBirdsongBuffer} from './birdsong.js?v=0.6.0';
-import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.6.0';
-import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.6.0';
-import {attachMusGame} from './game-ui.js?v=0.6.0';
+import {createBirdsongBuffer} from './birdsong.js?v=0.7.0';
+import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.7.0';
+import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.7.0';
+import {attachMusGame} from './game-ui.js?v=0.7.0';
 
 const $=id=>document.getElementById(id), stage=$('stage'), host=$('scene');
 let renderer,world,camera,bootStep="graphics";

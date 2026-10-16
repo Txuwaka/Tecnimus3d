@@ -1,7 +1,7 @@
-import {MusGame,PLAYER_NAMES,PHASE_NAMES,SIGNAL_NAMES} from './mus-game.js?v=0.6.0';
-import {MusRules} from './mus-rules.js?v=0.6.0';
-import {cardName,cardURL} from './cards.js?v=0.6.0';
-import {loadProfile,saveProfile,normalizeProfile} from './profiles.js?v=0.6.0';
+import {MusGame,PLAYER_NAMES,PHASE_NAMES,SIGNAL_NAMES} from './mus-game.js?v=0.7.0';
+import {MusRules} from './mus-rules.js?v=0.7.0';
+import {cardName,cardURL} from './cards.js?v=0.7.0';
+import {loadProfile,saveProfile,normalizeProfile} from './profiles.js?v=0.7.0';
 
 export function attachMusGame({world,view,time,speak,toast,resume,markTurn,refreshCards,profileChanged=()=>{},storage,confirmReset=()=>true,engine=new MusGame()}){
   const $=id=>document.getElementById(id);

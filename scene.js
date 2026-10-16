@@ -1,6 +1,6 @@
 import * as THREE from './vendor/three.module.js';
-import {INITIAL_HANDS,dealHands,cardKey} from './cards.js?v=0.6.0';
-import {normalizeProfile,seatRoster} from './profiles.js?v=0.6.0';
+import {INITIAL_HANDS,dealHands,cardKey} from './cards.js?v=0.7.0';
+import {normalizeProfile,seatRoster} from './profiles.js?v=0.7.0';
 
 export const PEOPLE = {
   txuwa: {name:'Jugador', role:'TÚ · EQUIPO DEL TAPETE', title:'Tu sitio está reservado.', copy:'Sudadera roja, cara de buena gente y una mano que nadie debería subestimar. Lola se sienta enfrente: es tu compañera.', meta:'Sur de la mesa · Pareja con Lola', color:0x8d6757, skin:0xe8b18b, hair:0x553b2b, x:.4,z:2.65, rot:Math.PI, type:'beard', quote:'¡Yo he venido a aprender… y a ganar!'},
@@ -65,15 +65,15 @@ function cardFace(value,suit){return texture(128,192,(c,w,h)=>{c.fillStyle='#fff
 
 function agedPlaster(){
   return texture(768,384,(c,w,h)=>{
-    c.fillStyle='#b9ad78';c.fillRect(0,0,w,h);
+    c.fillStyle='#cfb75e';c.fillRect(0,0,w,h);
     let seed=1911;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
     // Layers of uneven old paint, smoke-darkened cornices and thin drips.
     for(let i=0;i<1800;i++){
-      c.globalAlpha=.012+random()*.035;c.fillStyle=i%3?'#605338':'#eee4b2';
+      c.globalAlpha=.012+random()*.035;c.fillStyle=i%3?'#796037':'#f1d98c';
       c.beginPath();c.ellipse(random()*w,random()*h,5+random()*65,3+random()*26,random()*3,0,Math.PI*2);c.fill();
     }
-    for(let y=0;y<85;y++){c.globalAlpha=.16*Math.pow(1-y/85,2);c.fillStyle='#51472d';c.fillRect(0,y,w,1)}
-    for(let i=0;i<45;i++){c.globalAlpha=.025+random()*.035;c.fillStyle='#655837';c.fillRect(random()*w,0,1+random()*2,15+random()*100)}
+    for(let y=0;y<85;y++){c.globalAlpha=.16*Math.pow(1-y/85,2);c.fillStyle='#6b522c';c.fillRect(0,y,w,1)}
+    for(let i=0;i<45;i++){c.globalAlpha=.025+random()*.035;c.fillStyle='#84652e';c.fillRect(random()*w,0,1+random()*2,15+random()*100)}
     c.globalAlpha=1;
   });
 }
@@ -83,12 +83,12 @@ export function createWorld({cardTextures=new Map()}={}){
   scene.add(new THREE.HemisphereLight(0xf3edda,0x77705b,2.0));const sun=new THREE.DirectionalLight(0xfff3dd,2.5);sun.position.set(-2,10,7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-9,right:9,top:8,bottom:-8,near:1,far:25});sun.shadow.bias=-.0003;sun.shadow.normalBias=.04;sun.shadow.radius=3;scene.add(sun);const fill=new THREE.DirectionalLight(0xe9e9da,.9);fill.position.set(7,6,-2);scene.add(fill);
   // A little cutaway building, with a real floor and two removable walls.
   slab(world,12.5,9.65,.34,0x7c725d,0,-.47,0,.25);slab(world,12.18,9.35,.15,0xaaa084,0,-.11,0,.16);
-  for(let row=0;row<15;row++){const z=-4.15+row*.6;for(let col=0;col<4;col++){const x=-4.5+col*3;box(world,2.97,.045,.582,[0x92866e,0x9d9077,0xa5997d,0x978c72][(row+col)%4],x,.07,z)}}
+  for(let row=0;row<15;row++){const z=-4.15+row*.6;for(let col=0;col<4;col++){const x=-4.5+col*3;box(world,2.97,.045,.582,[0xa18d62,0xab986b,0xb3a174,0xa49165][(row+col)%4],x,.07,z)}}
   const back=new THREE.Group(),left=new THREE.Group();world.add(back,left);back.name='Mur du fond';left.name='Mur lateral';
-  const plaster=agedPlaster(),plasterMat=new THREE.MeshStandardMaterial({map:plaster,roughness:1});const backWall=box(back,12.2,4.65,.2,0xb9ad78,0,2.32,-4.53),leftWall=box(left,.2,4.65,9.15,0xb9ad78,-6.06,2.32,-.05);backWall.name='Pared envejecida';leftWall.name='Pared envejecida';backWall.material=plasterMat;leftWall.material=plasterMat;
-  box(back,12.23,1.05,.06,0x6c6c56,0,.58,-4.40);box(left,.06,1.05,9.12,0x6c6c56,-5.94,.58,0);box(back,12.2,.10,.10,0x8b6b46,0,1.15,-4.36);box(left,.1,.1,9.12,0x8b6b46,-5.9,1.15,0);
-  for(let i=0;i<20;i++)box(back,.035,.95,.02,0x585b49,-5.7+i*.6,.6,-4.36);
-  for(let i=0;i<15;i++)box(left,.02,.95,.035,0x585b49,-5.90,.6,-4.2+i*.6);
+  const plaster=agedPlaster(),plasterMat=new THREE.MeshStandardMaterial({map:plaster,roughness:1});const backWall=box(back,12.2,4.65,.2,0xcfb75e,0,2.32,-4.53),leftWall=box(left,.2,4.65,9.15,0xcfb75e,-6.06,2.32,-.05);backWall.name='Pared envejecida';leftWall.name='Pared envejecida';backWall.material=plasterMat;leftWall.material=plasterMat;
+  box(back,12.23,1.05,.06,0x83774d,0,.58,-4.40);box(left,.06,1.05,9.12,0x83774d,-5.94,.58,0);box(back,12.2,.10,.10,0x8b6b46,0,1.15,-4.36);box(left,.1,.1,9.12,0x8b6b46,-5.9,1.15,0);
+  for(let i=0;i<20;i++)box(back,.035,.95,.02,0x6f643f,-5.7+i*.6,.6,-4.36);
+  for(let i=0;i<15;i++)box(left,.02,.95,.035,0x6f643f,-5.90,.6,-4.2+i*.6);
   box(back,12.25,.14,.22,0x9c7852,0,4.6,-4.5);box(left,.22,.14,9.25,0x9c7852,-6,4.6,0);
   // Entrance, chalk menu and the back-bar shelves.
   box(back,1.30,2.8,.12,0x825e3f,-4.64,1.45,-4.35);box(back,1.1,2.56,.04,0x46605b,-4.64,1.44,-4.26);box(back,.065,2.50,.06,0xb28e5f,-4.64,1.45,-4.21);ball(back,.055,.055,.055,0xd9ad53,-4.22,1.39,-4.16);sign(back,'BIENVENIDOS',1.0,.23,-4.64,2.41,-4.19,'#e1c48d','#506051','bold 60px Georgia');
@@ -133,7 +133,7 @@ export function createWorld({cardTextures=new Map()}={}){
     const dt=t-dealStart;cards.forEach((c,i)=>{const u=THREE.MathUtils.clamp((dt-i*.065)/.5,0,1);if(dt<3){const ease=1-Math.pow(1-u,3);c.position.copy(c.userData.home);c.position.z+= (1-ease)*-.6;c.position.y+=Math.sin(u*Math.PI)*.35;c.scale.setScalar(.2+.8*ease)}else{c.position.copy(c.userData.home);c.scale.setScalar(1)}if(c.userData.selected)c.position.y+=.13;const discard=c.userData.discardStart;if(discard!==undefined){const u=THREE.MathUtils.clamp((t-discard)/.7,0,1);c.position.z+=u*1.5;c.position.y+=Math.sin(u*Math.PI)*.40;c.scale.setScalar(1-u*.7);c.visible=u<1}else c.visible=true});
   }
   function cutaway(camera){back.visible=camera.position.z>-3.7;left.visible=camera.position.x>-5.1}
-  return {scene,world,people,cards,chairs,pickables,configureProfile,getPerson,setPlayerView(value){playerView=value;people.txuwa.group.visible=!value;chairs.txuwa.visible=!value},gesture(id,key,t,duration=1){gestures.set(id,{key,until:t+duration})},walls:{back,left},update,cutaway,select(id){selected=id},get selected(){return selected},signal(t){signalUntil=t+1},getHand(id='txuwa'){return hands[id].map(card=>({...card}))},setHands(next,{revealed=false,selected=[]}={}){hands=structuredClone(next);for(const c of cards){const card=hands[c.userData.player][c.userData.index];if(!card)continue;c.userData.card=card;c.userData.selected=c.userData.player==='txuwa'&&selected.includes(c.userData.index);c.material.map=c.userData.player==='txuwa'||revealed?face(card):cardBack;c.material.needsUpdate=true}},redeal(t){dealStart=t;for(const c of cards){delete c.userData.discardStart;c.visible=true}},discardCards(id,indices,t){for(const c of cards)if(c.userData.player===id&&indices.includes(c.userData.index))c.userData.discardStart=t},deal(t){dealStart=t;hands=dealHands();for(const c of cards){const card=hands[c.userData.player][c.userData.index];c.userData.card=card;c.material.map=face(card);c.material.needsUpdate=true}},anchor(id){const d=PEOPLE[id];return id==='table'?new THREE.Vector3(.4,2,.7):new THREE.Vector3(d.x,3.05,d.z)},dispose(){scene.traverse(o=>{if(o.geometry)o.geometry.dispose()});}};
+  return {scene,world,people,cards,chairs,pickables,configureProfile,getPerson,setPlayerView(value){playerView=value;people.txuwa.group.visible=!value;chairs.txuwa.visible=!value},gesture(id,key,t,duration=1){gestures.set(id,{key,until:t+duration})},walls:{back,left},update,cutaway,select(id){selected=id},get selected(){return selected},signal(t){signalUntil=t+1},getHand(id='txuwa'){return hands[id].map(card=>({...card}))},setHands(next,{revealed=false,selected=[]}={}){hands=structuredClone(next);for(const c of cards){const card=hands[c.userData.player][c.userData.index];if(!card)continue;c.userData.card=card;c.userData.selected=c.userData.player==='txuwa'&&selected.includes(c.userData.index);c.material.map=revealed?face(card):cardBack;c.material.needsUpdate=true}},redeal(t){dealStart=t;for(const c of cards){delete c.userData.discardStart;c.visible=true}},discardCards(id,indices,t){for(const c of cards)if(c.userData.player===id&&indices.includes(c.userData.index))c.userData.discardStart=t},deal(t){dealStart=t;hands=dealHands();for(const c of cards){const card=hands[c.userData.player][c.userData.index];c.userData.card=card;c.material.map=face(card);c.material.needsUpdate=true}},anchor(id){const d=PEOPLE[id];return id==='table'?new THREE.Vector3(.4,2,.7):new THREE.Vector3(d.x,3.05,d.z)},dispose(){scene.traverse(o=>{if(o.geometry)o.geometry.dispose()});}};
 }
 
 // Collisions keep a walking visitor inside the room and outside furniture.

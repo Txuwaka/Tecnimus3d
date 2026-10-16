@@ -1,5 +1,5 @@
-import {MusRules as R} from './mus-rules.js?v=0.6.0';
-import {normalizeProfile,seatRoster} from './profiles.js?v=0.6.0';
+import {MusRules as R} from './mus-rules.js?v=0.7.0';
+import {normalizeProfile,seatRoster} from './profiles.js?v=0.7.0';
 
 export const PLAYER_NAMES={txuwa:'Jugador',nico:'Nico',lola:'Lola',bruno:'Bruno'};
 export const PHASE_NAMES={GRANDE:'Grande',CHICA:'Chica',PARES:'Pares',JUEGO:'Juego',PUNTO:'Punto'};

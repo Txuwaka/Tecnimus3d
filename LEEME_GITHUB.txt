@@ -1,5 +1,13 @@
-TECNIMUSONLINE 3D - ALPHA 0.6 JUGABLE
+TECNIMUSONLINE 3D - ALPHA 0.7 JUGABLE
 16/10/2026
+
+REY DE TECNIMUS Y CARTAS BOCA ABAJO
+
+El rey original de nuestra baraja sustituye la T del logotipo y del icono.
+Durante la partida, las cuatro manos quedan boca abajo sobre la mesa 3D.
+Tus cartas siguen visibles en el panel inferior para jugar y descartar.
+Al mostrar cartas, se descubren las cuatro manos.
+La taberna tiene un tono mas amarillo envejecido.
 
 TABERNA VIEJA, PARTIDA A DOS SEGUNDOS
 
