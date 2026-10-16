@@ -1,0 +1,223 @@
+{
+  "source": "Cartas personalizadas de Tecnimus aportadas por Txuwa",
+  "suits": [
+    "oros",
+    "copas",
+    "espadas",
+    "bastos"
+  ],
+  "ranks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    10,
+    11,
+    12
+  ],
+  "cards": [
+    {
+      "suit": "oros",
+      "rank": 1,
+      "file": "oros-1.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 2,
+      "file": "oros-2.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 3,
+      "file": "oros-3.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 4,
+      "file": "oros-4.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 5,
+      "file": "oros-5.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 6,
+      "file": "oros-6.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 7,
+      "file": "oros-7.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 10,
+      "file": "oros-10.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 11,
+      "file": "oros-11.webp"
+    },
+    {
+      "suit": "oros",
+      "rank": 12,
+      "file": "oros-12.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 1,
+      "file": "copas-1.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 2,
+      "file": "copas-2.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 3,
+      "file": "copas-3.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 4,
+      "file": "copas-4.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 5,
+      "file": "copas-5.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 6,
+      "file": "copas-6.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 7,
+      "file": "copas-7.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 10,
+      "file": "copas-10.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 11,
+      "file": "copas-11.webp"
+    },
+    {
+      "suit": "copas",
+      "rank": 12,
+      "file": "copas-12.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 1,
+      "file": "espadas-1.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 2,
+      "file": "espadas-2.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 3,
+      "file": "espadas-3.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 4,
+      "file": "espadas-4.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 5,
+      "file": "espadas-5.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 6,
+      "file": "espadas-6.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 7,
+      "file": "espadas-7.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 10,
+      "file": "espadas-10.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 11,
+      "file": "espadas-11.webp"
+    },
+    {
+      "suit": "espadas",
+      "rank": 12,
+      "file": "espadas-12.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 1,
+      "file": "bastos-1.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 2,
+      "file": "bastos-2.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 3,
+      "file": "bastos-3.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 4,
+      "file": "bastos-4.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 5,
+      "file": "bastos-5.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 6,
+      "file": "bastos-6.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 7,
+      "file": "bastos-7.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 10,
+      "file": "bastos-10.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 11,
+      "file": "bastos-11.webp"
+    },
+    {
+      "suit": "bastos",
+      "rank": 12,
+      "file": "bastos-12.webp"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+TECNIMUSONLINE 3D - VERSION PARA GITHUB PAGES
+Versión 0.2 - 16/10/2026
+
+Este paquete contiene el bar 3D interactivo con nuestras 40 cartas.
+Puedes inspeccionar personajes, pasear, repartir y hacer una seña.
+Es un prototipo visual: todavía no incluye las reglas ni el multijugador.
+
+SUBIR A GITHUB
+
+1. Descomprime el ZIP en tu ordenador.
+2. Crea un repositorio de pruebas: tecnimus-3d-prueba.
+3. En el repositorio entra en Add file > Upload files.
+4. Arrastra TODOS los archivos y carpetas extraídos.
+   index.html debe quedar directamente en la raíz del repositorio.
+   Conserva las carpetas assets y vendor con sus archivos dentro.
+5. Pulsa Commit changes para guardar la subida.
+
+VISIBILIDAD
+
+Guardar los archivos en un repositorio privado permite conservar el código
+privado. Activar GitHub Pages en una cuenta personal normal publica una
+web accesible en Internet, incluso si el plan permite un repositorio privado.
+Con GitHub Free, Pages requiere un repositorio público.
+Este paquete no incorpora el control de acceso del prototipo privado alojado.
+
+Si decides publicarlo para probarlo con GitHub Pages:
+
+6. Entra en Settings > Pages.
+7. En Source selecciona Deploy from a branch.
+8. En Branch elige main y carpeta /(root).
+9. Pulsa Save. Cuando termine el despliegue, pulsa Visit site.
+
+La dirección tendrá esta forma:
+https://TU_USUARIO.github.io/tecnimus-3d-prueba/
+
+Los archivos ya usan rutas relativas compatibles con esa dirección.
+No necesitas npm, compilación, claves ni un servidor de partidas.
+
+SI PREFIERES PROBARLO PRIVADO EN TU ORDENADOR
+
+En Linux Mint, abre una terminal dentro de la carpeta descomprimida y escribe:
+python3 -m http.server 8000 --bind 127.0.0.1
+
+Abre después http://localhost:8000 en tu navegador.
+Para terminar, pulsa Ctrl+C en la terminal.
+Usa el servidor local: abrir index.html directamente puede bloquear módulos.
+
+CONTROLES
+
+- Arrastrar: girar; rueda: acercar o alejar.
+- Botones laterales: vistas de cámara y personajes.
+- Pasear: WASD, flechas o botones táctiles; arrastrar para mirar.
+- Cartas: ver tu mano o la baraja completa por palos.
+- Repartir: nueva mano de muestra, sin cartas duplicadas.
+- Hacer una seña: Lola responde.
+- Altavoz: activar o silenciar ambiente sonoro.
+
+VALIDACIÓN
+
+Las pruebas de geometría e interacción en un DOM simulado pasan.
+Se han revisado las imágenes de las cartas y las rutas del paquete.
+No se ha comprobado este paquete en un navegador real ni desplegado en GitHub.
+
+Dependencia: Three.js r160, licencia MIT incluida en vendor.
+
+Documentación oficial:
+https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
+https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site

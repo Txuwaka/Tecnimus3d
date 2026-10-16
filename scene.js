@@ -1,0 +1,114 @@
+import * as THREE from './vendor/three.module.js';
+import {INITIAL_HANDS,dealHands,cardKey} from './cards.js';
+
+export const PEOPLE = {
+  txuwa: {name:'Txuwa', role:'TÚ · EQUIPO DEL TAPETE', title:'Tu sitio está reservado.', copy:'Sudadera roja, cara de buena gente y una mano que nadie debería subestimar. Lola se sienta enfrente: es tu compañera.', meta:'Sur de la mesa · Pareja con Lola', color:0xba593c, skin:0xe8b18b, hair:0x553b2b, x:.4,z:2.65, rot:Math.PI, type:'beard', quote:'¡Yo he venido a aprender… y a ganar!'},
+  lola: {name:'Lola', role:'TU COMPAÑERA', title:'Lola, la de los faroles.', copy:'Tu aliada al otro lado del tapete. Parece muy tranquila… hasta que se juega el último tanto. No se le escapa una seña.', meta:'Norte de la mesa · Pareja con Txuwa', color:0xd3a443, skin:0xe7b297, hair:0x733c26, x:.4,z:-1.25,rot:0,type:'bun',quote:'Tú hazme caso. Yo controlo. Más o menos.'},
+  bruno: {name:'Bruno', role:'RIVAL · EQUIPO DEL MOSTACHO', title:'Bruno. Mucho bigote.', copy:'Tiene un bigote respetable y una confianza desproporcionada. Su compañero es Nico, sentado justo enfrente.', meta:'Oeste de la mesa · Pareja con Nico', color:0x5c8194, skin:0xe2ae86, hair:0x513b2f, x:-1.65,z:.7,rot:Math.PI/2,type:'cap',quote:'No es un farol. Es una estrategia creativa.'},
+  nico: {name:'Nico', role:'RIVAL · EQUIPO DEL MOSTACHO', title:'Nico, calculando… algo.', copy:'Gafas redondas, jersey violeta y cara de tener un plan. A veces el plan consiste en esperar a que Bruno tenga un plan.', meta:'Este de la mesa · Pareja con Bruno', color:0x8b718c, skin:0xc78d68, hair:0x3c302b, x:2.45,z:.7,rot:-Math.PI/2,type:'glasses',quote:'Según mis cálculos… necesito otra tortilla.'},
+  paco: {name:'Paco', role:'CAMARERO · NIVEL DE LIMPIEZA: ÉPICO', title:'Paco y el vaso infinito.', copy:'Mientras la mesa discute, Paco limpia el mismo vaso una y otra vez. Lleva así desde que abrió el bar. Y el vaso, impecable.', meta:'Detrás de la barra · Animación continua', color:0xe8e1cc, skin:0xe5b793, hair:0x4d392d, x:1.55,z:-3.5,rot:0,type:'waiter',quote:'¿Otra ronda? De mus, que el vaso aún no está.'},
+  table:{name:'Mesa de mus',role:'EL CORAZÓN DEL BAR',title:'Cuatro sillas. Un buen rato.',copy:'Tapete verde, baraja española y tantos de madera. Tú y Lola os miráis de frente. Bruno y Nico forman la otra pareja.',meta:'Mesa central · 4 puestos · Baraja española'},
+  room:{name:'La taberna',role:'UN BAR CON MUCHA VIDA',title:'Pasa, estás en tu casa.',copy:'Gira la escena, acércate a la mesa o toca un personaje para conocer a la cuadrilla.',meta:'4 jugadores · 1 camarero incansable'}
+};
+
+export const VIEWS = {
+  general:{position:[10.8,10.5,13.7],target:[-.1,1.0,-.45]},
+  table:{position:[5.1,6.8,7.8],target:[.4,1.55,.6]},
+  seat:{position:[.4,2.77,2.48],target:[.4,2.1,-1.1]},
+  bar:{position:[4.5,3.8,1.2],target:[1.35,2.05,-3.3]}
+};
+
+const matCache=new Map(), geoCache=new Map();
+function material(color, extra={}){const key=color+JSON.stringify(extra);if(!matCache.has(key))matCache.set(key,new THREE.MeshStandardMaterial({color,roughness:.87,metalness:0,...extra}));return matCache.get(key)}
+function geometry(key, make){if(!geoCache.has(key))geoCache.set(key,make());return geoCache.get(key)}
+function mesh(parent,geo,color,x=0,y=0,z=0,extra){const o=new THREE.Mesh(geo,material(color,extra));o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function box(p,w,h,d,c,x=0,y=0,z=0){return mesh(p,geometry(`b${w},${h},${d}`,()=>new THREE.BoxGeometry(w,h,d)),c,x,y,z)}
+function ball(p,rx,ry,rz,c,x=0,y=0,z=0){const o=mesh(p,geometry('sphere',()=>new THREE.SphereGeometry(1,16,12)),c,x,y,z);o.scale.set(rx,ry,rz);return o}
+function cylinder(p,r1,r2,h,c,x=0,y=0,z=0,n=20){return mesh(p,geometry(`c${r1},${r2},${h},${n}`,()=>new THREE.CylinderGeometry(r1,r2,h,n)),c,x,y,z)}
+function limb(p,a,b,r,c){const v=new THREE.Vector3().subVectors(b,a);const o=cylinder(p,r,r*.95,v.length(),c);o.position.copy(a).add(b).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.normalize());return o}
+function roundedShape(w,h,r){const s=new THREE.Shape(),x=-w/2,y=-h/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);return s}
+function slab(p,w,d,h,c,x,y,z,r=.1){const geo=geometry(`r${w},${d},${h},${r}`,()=>new THREE.ExtrudeGeometry(roundedShape(w,d,r),{depth:h,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:Math.min(.025,h*.3),bevelThickness:Math.min(.025,h*.2),curveSegments:6}));const o=mesh(p,geo,c,x,y,z);o.rotation.x=-Math.PI/2;return o}
+function texture(w,h,paint){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');paint(ctx,w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
+function sign(p,text,w,h,x,y,z,background='#f3dfaa',ink='#5f3d2a',font='bold 56px Georgia'){const t=texture(1024,256,(c,W,H)=>{c.fillStyle=background;c.fillRect(0,0,W,H);c.fillStyle=ink;c.font=font;c.textAlign='center';c.textBaseline='middle';c.fillText(text,W/2,H/2,W*.92)});const o=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:t,roughness:1}));o.position.set(x,y,z);p.add(o);return o}
+function circleLine(p,rad,color,x,y,z){const o=new THREE.Mesh(new THREE.TorusGeometry(rad,.018,7,26),material(color));o.position.set(x,y,z);p.add(o);return o}
+function bottle(p,c,x,y,z,s=1){const g=new THREE.Group();g.position.set(x,y,z);g.scale.setScalar(s);cylinder(g,.075,.085,.32,c,0,.16,0,12);cylinder(g,.031,.055,.11,c,0,.375,0,12);cylinder(g,.034,.034,.035,0xddbd76,0,.44,0,10);cylinder(g,.078,.078,.12,0xf1e4be,0,.18,0,12);p.add(g);return g}
+function glass(p,x,y,z){const g=new THREE.Group();g.position.set(x,y,z);const m=material(0xe7f3db,{transparent:true,opacity:.58,roughness:.2,side:THREE.DoubleSide,depthWrite:false});const o=new THREE.Mesh(new THREE.CylinderGeometry(.08,.065,.21,16,1,true),m);o.position.y=.105;g.add(o);circleLine(g,.078,0xe9f1dd,0,.21,0).rotation.x=Math.PI/2;cylinder(g,.066,.066,.008,0xe9edd6,0,.005,0);p.add(g);return g}
+
+function chair(parent,x,z,rot,color=0x8b5a36){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;parent.add(g);slab(g,.83,.78,.14,color,0,.94,0,.13);for(const a of [-.3,.3])for(const b of [-.27,.27]){const leg=box(g,.10,.9,.1,color,a,.46,b);leg.rotation.z=a*.08}box(g,.1,1.25,.1,color,-.34,1.46,-.31);box(g,.1,1.25,.1,color,.34,1.46,-.31);const back=box(g,.72,.49,.1,color,0,1.85,-.33);back.rotation.z=-.025;box(g,.50,.1,.07,0xa87749,0,1.89,-.264);return g}
+
+function character(parent,id,standing=false){const data=PEOPLE[id],g=new THREE.Group();parent.add(g);g.position.set(data.x,0,data.z);g.rotation.y=data.rot;g.userData.entity=id;
+  const y=standing?1.55:1.57;
+  const body=ball(g,.32,.45,.25,data.color,0,y,0);body.rotation.x=standing?0:.08;
+  if(standing){box(g,.46,.5,.17,0x4a5147,0,1.38,.215);for(const side of [-1,1]){limb(g,new THREE.Vector3(side*.14,1.2,0),new THREE.Vector3(side*.15,.25,0),.11,0x403e35);ball(g,.13,.09,.22,0x3b352e,side*.15,.12,.05)}}else{for(const side of [-1,1]){limb(g,new THREE.Vector3(side*.18,1.12,.02),new THREE.Vector3(side*.22,1.07,.40),.12,0x484b46);limb(g,new THREE.Vector3(side*.22,1.07,.4),new THREE.Vector3(side*.22,.29,.42),.105,0x484b46);ball(g,.14,.10,.23,0x4c3a2d,side*.22,.18,.48)}}
+  cylinder(g,.115,.13,.21,data.skin,0,y+.4,0);
+  const head=new THREE.Group();head.position.set(0,y+.75,.015);g.add(head);ball(head,.38,.42,.34,data.skin);
+  for(const side of [-1,1]){ball(head,.085,.12,.07,data.skin,side*.37,-.02,0);ball(head,.052,.066,.045,0xd39478,side*.375,-.02,.035);ball(head,.10,.07,.045,0xda947c,side*.225,-.12,.281)}
+  const eyes=[];for(const side of [-1,1]){ball(head,.095,.112,.047,0xfff8e2,side*.145,.065,.30);const eye=ball(head,.038,.057,.022,0x3e3028,side*.14,.055,.345);eyes.push(eye);const brow=box(head,.135,.032,.035,data.hair,side*.145,.215,.288);brow.rotation.z=side*-.12}
+  ball(head,.085,.10,.115,data.skin,0,-.045,.34);
+  const smile=new THREE.CatmullRomCurve3([new THREE.Vector3(-.115,-.19,.285),new THREE.Vector3(0,-.225,.312),new THREE.Vector3(.115,-.19,.285)]);mesh(head,new THREE.TubeGeometry(smile,12,.014,6,false),0x784d3a);
+  if(data.type==='beard'){ball(head,.28,.18,.2,data.hair,0,-.235,.17);ball(head,.14,.074,.065,data.skin,0,-.19,.326);ball(head,.055,.025,.023,0x9b6044,0,-.205,.379)}else{const hair=mesh(head,geometry('haircap',()=>new THREE.SphereGeometry(1,20,12,0,Math.PI*2,0,Math.PI*.54)),data.hair,0,.10,-.025);hair.scale.set(.39,.36,.35)}
+  if(data.type==='cap'){const cap=mesh(head,new THREE.SphereGeometry(.42,20,10,0,Math.PI*2,0,Math.PI/2),0x51778b,0,.22,-.015);cap.scale.y=.5;ball(head,.37,.035,.18,0x3f667a,0,.22,.28)}
+  if(['cap','waiter'].includes(data.type)){for(const side of [-1,1]){const m=ball(head,.12,.045,.055,data.hair,side*.092,-.14,.34);m.rotation.z=side*.2}}
+  if(data.type==='bun'){ball(head,.25,.23,.23,data.hair,0,.35,-.21);for(const side of [-1,1]){ball(head,.115,.22,.13,data.hair,side*.31,.10,-.08);ball(head,.038,.048,.025,0xd3aa53,side*.38,-.16,.075)}}
+  if(data.type==='glasses'){for(const side of [-1,1])circleLine(head,.123,0x3c3b35,side*.15,.075,.354);box(head,.07,.022,.023,0x3c3b35,0,.09,.35)}
+  if(id==='txuwa'){const hoodie=box(g,.04,.25,.03,0xe3b18a,-.13,y+.1,.235);hoodie.rotation.z=.1;box(g,.04,.25,.03,0xe3b18a,.13,y+.1,.235);ball(g,.16,.095,.03,0x9e452f,0,y-.18,.235)}
+  const arms=[];for(const side of [-1,1]){const a=new THREE.Group();a.position.set(side*.29,y+.13,0);g.add(a);const elbow=new THREE.Vector3(side*.12,standing?.08:-.08,.26),hand=new THREE.Vector3(standing&&side===1?-.48:side*.04,standing?(side===1?.37:.26):.10,.57);limb(a,new THREE.Vector3(),elbow,.11,data.color);limb(a,elbow,hand,.08,data.skin);ball(a,.10,.065,.11,data.skin,hand.x,hand.y,hand.z);arms.push(a)}
+  let tumbler=null,cloth=null;if(standing){tumbler=glass(g,-.30,1.86,.57);cloth=ball(g,.16,.055,.15,0xf7edd4,-.18,2.06,.57);for(const side of [-1,1])box(g,.03,.27,.025,0x4f5142,side*.17,1.86,.22)}
+  return {id,group:g,head,eyes,arms,glass:tumbler,cloth,baseY:y,phase:['txuwa','lola','bruno','nico','paco'].indexOf(id)*1.4};
+}
+
+function cardFace(value,suit){return texture(128,192,(c,w,h)=>{c.fillStyle='#fff2d5';c.fillRect(0,0,w,h);c.strokeStyle='#dfc397';c.lineWidth=4;c.strokeRect(5,5,w-10,h-10);const ink=['#b58228','#963c2e','#40656d','#4e774b'][suit];c.fillStyle=ink;c.font='bold 34px Georgia';c.fillText(value,12,37);c.save();c.translate(64,103);if(suit===0){c.beginPath();c.arc(0,0,22,0,Math.PI*2);c.fill();c.strokeStyle='#edc76b';c.lineWidth=4;c.beginPath();c.arc(0,0,15,0,Math.PI*2);c.stroke()}if(suit===1){c.beginPath();c.moveTo(-23,-21);c.quadraticCurveTo(-22,14,0,14);c.quadraticCurveTo(22,14,23,-21);c.closePath();c.fill();c.fillRect(-3,10,6,18);c.fillRect(-15,27,30,5)}if(suit===2){c.beginPath();c.moveTo(0,-35);c.lineTo(9,10);c.lineTo(0,18);c.lineTo(-9,10);c.closePath();c.fill();c.fillRect(-20,15,40,5);c.fillRect(-4,20,8,15)}if(suit===3){c.rotate(-.4);c.beginPath();c.ellipse(0,0,10,35,0,0,Math.PI*2);c.fill();c.fillStyle='#a9b37a';c.fillRect(-3,-25,3,42)}c.restore()})}
+
+export function createWorld({cardTextures=new Map()}={}){
+  const scene=new THREE.Scene();const world=new THREE.Group();world.name='Taberna';scene.add(world);
+  scene.add(new THREE.HemisphereLight(0xfff3d5,0x807254,2.4));const sun=new THREE.DirectionalLight(0xffe5b5,3.4);sun.position.set(-2,10,7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-9,right:9,top:8,bottom:-8,near:1,far:25});sun.shadow.bias=-.0003;sun.shadow.normalBias=.04;sun.shadow.radius=3;scene.add(sun);const fill=new THREE.DirectionalLight(0xe2eeff,1.4);fill.position.set(7,6,-2);scene.add(fill);
+  // A little cutaway building, with a real floor and two removable walls.
+  slab(world,12.5,9.65,.34,0x927653,0,-.47,0,.25);slab(world,12.18,9.35,.15,0xc5a370,0,-.11,0,.16);
+  for(let row=0;row<15;row++){const z=-4.15+row*.6;for(let col=0;col<4;col++){const x=-4.5+col*3;box(world,2.97,.045,.582,[0xb78d5f,0xc09766,0xc8a170,0xb88f61][(row+col)%4],x,.07,z)}}
+  const back=new THREE.Group(),left=new THREE.Group();world.add(back,left);back.name='Mur du fond';left.name='Mur lateral';
+  box(back,12.2,4.65,.2,0xd7c099,0,2.32,-4.53);box(left,.2,4.65,9.15,0xdac6a2,-6.06,2.32,-.05);
+  box(back,12.23,1.05,.06,0x71816b,0,.58,-4.40);box(left,.06,1.05,9.12,0x71816b,-5.94,.58,0);box(back,12.2,.10,.10,0x8b6b46,0,1.15,-4.36);box(left,.1,.1,9.12,0x8b6b46,-5.9,1.15,0);
+  for(let i=0;i<20;i++)box(back,.035,.95,.02,0x61705d,-5.7+i*.6,.6,-4.36);
+  for(let i=0;i<15;i++)box(left,.02,.95,.035,0x61705d,-5.90,.6,-4.2+i*.6);
+  box(back,12.25,.14,.22,0x9c7852,0,4.6,-4.5);box(left,.22,.14,9.25,0x9c7852,-6,4.6,0);
+  // Entrance, chalk menu and the back-bar shelves.
+  box(back,1.30,2.8,.12,0x825e3f,-4.64,1.45,-4.35);box(back,1.1,2.56,.04,0x46605b,-4.64,1.44,-4.26);box(back,.065,2.50,.06,0xb28e5f,-4.64,1.45,-4.21);ball(back,.055,.055,.055,0xd9ad53,-4.22,1.39,-4.16);sign(back,'BIENVENIDOS',1.0,.23,-4.64,2.41,-4.19,'#e1c48d','#506051','bold 60px Georgia');
+  const menu=new THREE.Group();back.add(menu);box(menu,1.43,1.85,.10,0x805638,-2.81,2.55,-4.31);box(menu,1.28,1.70,.04,0x364b43,-2.81,2.55,-4.24);const menuTex=texture(512,640,(c,w,h)=>{c.fillStyle='#364b43';c.fillRect(0,0,w,h);c.textAlign='center';c.fillStyle='#e8dfba';c.font='italic bold 45px Georgia';c.fillText('Hoy en la casa',w/2,85);c.font='29px Georgia';['Tortilla de Paco','Croquetas caseras','Limonada fresquita','────────────','El mus se sirve','con buen humor.'].forEach((s,i)=>c.fillText(s,w/2,180+i*65))});const mp=new THREE.Mesh(new THREE.PlaneGeometry(1.23,1.6),new THREE.MeshStandardMaterial({map:menuTex}));mp.position.set(-2.81,2.55,-4.21);menu.add(mp);
+  box(back,5.6,2.65,.09,0x8b6544,1.1,2.51,-4.36);box(back,5.35,2.4,.04,0x5a6355,1.1,2.51,-4.29);for(const sy of [1.48,2.35,3.3]){box(back,5.65,.12,.36,0x9f7649,1.1,sy,-4.04);for(let j=0;j<9;j++)bottle(back,[0x6d8c62,0xa8793f,0xb46b4a,0x789b9b][j%4],-1.25+j*.57,sy+.07,-4.04,j%3===0?1.2:1)}
+  box(back,4.55,.64,.12,0x573e2d,.2,4.0,-4.27);sign(back,'TECNI M U S',4.24,.40,.2,4.0,-4.19,'#573e2d','#f1ce81','bold 76px Georgia');
+  // Big cheerful window in the left wall, facing into the room.
+  const win=new THREE.Group();win.position.set(-5.9,2.8,-1.1);win.rotation.y=Math.PI/2;left.add(win);box(win,2.45,2.15,.12,0x936d42);box(win,2.2,1.9,.13,0xa5c5bc,0,0,.025);box(win,.065,1.91,.13,0xf0d8a6,0,0,.12);box(win,2.20,.065,.13,0xf0d8a6,0,0,.12);ball(win,.20,.20,.02,0xf6df9e,.55,.48,.11);for(const side of [-1,1]){const curtain=box(win,.38,2.05,.16,0xc27950,side*1.04,0,.18);curtain.rotation.z=side*-.035}box(win,2.64,.12,.4,0xa57c4e,0,-1.11,.06);
+  // Bar counter, side panels, brass foot rail, stools and coffee machine.
+  const bar=new THREE.Group();bar.userData.entity='paco';world.add(bar);box(bar,8.7,1.5,.75,0x9c6742,.8,.83,-2.65);for(let i=0;i<7;i++)box(bar,1.04,1.12,.055,0xa8764b,-2.84+i*1.2,.85,-2.24);for(let i=0;i<8;i++)box(bar,.055,1.3,.08,0x755039,-3.43+i*1.21,.85,-2.20);slab(bar,9.05,1.1,.19,0x654735,.8,1.60,-2.66,.15);slab(bar,8.94,1.04,.035,0x98704c,.8,1.80,-2.66,.12);limb(bar,new THREE.Vector3(-3.4,.35,-1.98),new THREE.Vector3(5.0,.35,-1.98),.042,0xc6a45c);for(const x of [-3,0,4.6])limb(bar,new THREE.Vector3(x,.35,-1.98),new THREE.Vector3(x,.35,-2.2),.04,0xb89858);
+  for(const x of [-2.65,3.85]){cylinder(world,.32,.34,.14,0x6b8072,x,1.13,-1.60);for(const d of [-.2,.2]){limb(world,new THREE.Vector3(x+d,1.06,-1.6-.2),new THREE.Vector3(x+d*1.3,.12,-1.6-.25),.045,0x825c38);limb(world,new THREE.Vector3(x+d,1.06,-1.6+.2),new THREE.Vector3(x+d*1.3,.12,-1.6+.25),.045,0x825c38)}}
+  box(bar,1.05,.65,.48,0xc7bf9e,-2.5,2.15,-2.75);box(bar,.95,.30,.05,0x514f44,-2.5,2.22,-2.49);for(const x of [-2.75,-2.23]){cylinder(bar,.045,.045,.12,0xd7bc7a,x,2.12,-2.42).rotation.x=Math.PI/2;cylinder(bar,.075,.06,.12,0xf3e3bf,x,1.91,-2.45)}box(bar,1.12,.04,.55,0x796d56,-2.5,1.84,-2.65);sign(bar,'CAFÉ',.65,.16,-2.5,2.40,-2.49,'#c7bf9e','#654c37','bold 80px Georgia');
+  glass(bar,2.5,1.85,-2.5);glass(bar,2.8,1.85,-2.5);bottle(bar,0xb69743,4.25,1.85,-2.6,1.2);cylinder(bar,.26,.22,.04,0xe8d3a5,3.4,1.85,-2.55);for(let i=0;i<5;i++)ball(bar,.065,.055,.05,0xba7439,3.3+i*.06,1.91,-2.54);
+  // The mus table, pairs placed opposite one another.
+  const table=new THREE.Group();table.position.set(.4,0,.7);table.name='Mesa de mus';table.userData.entity='table';world.add(table);for(const x of [-1,1])for(const z of [-.75,.75]){const leg=box(table,.17,1.5,.17,0x795130,x,.82,z);leg.rotation.z=x*-.045}slab(table,2.95,2.65,.17,0x745036,0,1.49,0,.35);slab(table,2.69,2.39,.035,0x557f63,0,1.68,0,.29);slab(table,2.48,2.18,.01,0x648b6b,0,1.725,0,.26);const logo=sign(table,'Tecnimus',1.3,.29,0,1.745,0,'#648b6b','#b9c69b','italic bold 80px Georgia');logo.rotation.x=-Math.PI/2;
+  let hands=structuredClone(INITIAL_HANDS);
+  const face=card=>cardTextures.get(cardKey(card))||cardFace(card.rank,['oros','copas','espadas','bastos'].indexOf(card.suit));
+  const cards=[],cardRoots=[];for(const id of ['txuwa','lola','bruno','nico']){const d=PEOPLE[id];chair(world,d.x,d.z,d.rot);const hand=new THREE.Group();hand.position.set(d.x,1.78,d.z);hand.rotation.y=d.rot;world.add(hand);cardRoots.push(hand);for(let i=0;i<4;i++){const card=hands[id][i],m=new THREE.Mesh(new THREE.PlaneGeometry(.29,.435),new THREE.MeshStandardMaterial({map:face(card),side:THREE.DoubleSide,roughness:1}));m.rotation.x=-Math.PI/2;m.rotation.z=(i-1.5)*-.1;const pos=new THREE.Vector3((i-1.5)*.205,.008+i*.003,.91+Math.abs(i-1.5)*.025);m.position.copy(pos);Object.assign(m.userData,{home:pos,card,player:id,index:i});hand.add(m);cards.push(m)}}
+  for(let i=0;i<12;i++)cylinder(table,.043,.043,.025,0xc9ab6b,-.92+(i%3)*.12,1.77+Math.floor(i/3)*.018,-.63,12);for(let i=0;i<7;i++)cylinder(table,.043,.043,.025,0xc9ab6b,.88+(i%2)*.12,1.77+Math.floor(i/2)*.018,.52,12);
+  const deck=slab(table,.26,.37,.1,0xe4cda0,-.75,1.76,.53,.025);const deckTop=box(table,.22,.012,.33,0xb36b4b,-.75,1.88,.53);
+  const people={};for(const id of ['txuwa','lola','bruno','nico','paco'])people[id]=character(world,id,id==='paco');
+  // Decorative corners: plant, dartboard, clock and table lamp.
+  const plant=new THREE.Group();plant.position.set(-4.90,0,2.74);world.add(plant);cylinder(plant,.31,.22,.55,0xb6754b,0,.35,0);cylinder(plant,.33,.33,.1,0xc78959,0,.63,0);cylinder(plant,.28,.28,.03,0x66563c,0,.68,0);for(let i=0;i<14;i++){const a=i*2.4,r=.2+(i%3)*.13;const end=new THREE.Vector3(Math.sin(a)*r,1.05+(i%4)*.18,Math.cos(a)*r);limb(plant,new THREE.Vector3(0,.68,0),end,.018,0x537248);const leaf=ball(plant,.10,.33,.07,i%2?0x73935a:0x507751,end.x,end.y,end.z);leaf.rotation.set(Math.sin(a)*.7,0,-Math.cos(a)*.7)}
+  const dart=new THREE.Group();dart.position.set(-5.89,2.85,1.95);dart.rotation.y=Math.PI/2;left.add(dart);cylinder(dart,.64,.64,.06,0x694c34).rotation.x=Math.PI/2;for(const [r,c] of [[.57,0xd7bd8c],[.43,0x69715b],[.28,0xb47b52],[.12,0xe3c58a],[.055,0x9b4f35]]){const q=cylinder(dart,r,r,.015,c,0,0,.04+(1-r)*.03,32);q.rotation.x=Math.PI/2}const dartStick=limb(dart,new THREE.Vector3(.22,.18,.1),new THREE.Vector3(.32,.3,.5),.012,0x72523b);ball(dart,.07,.09,.014,0xc56c47,.32,.3,.5);
+  const clock=new THREE.Group();clock.position.set(4.75,3.5,-4.36);back.add(clock);cylinder(clock,.43,.43,.07,0x785937).rotation.x=Math.PI/2;const cf=cylinder(clock,.36,.36,.025,0xe9d5a9,0,0,.05);cf.rotation.x=Math.PI/2;box(clock,.025,.23,.02,0x745437,0,.09,.08);const hr=box(clock,.19,.025,.02,0x745437,-.07,0,.08);hr.rotation.z=-.4;ball(clock,.04,.04,.02,0xb57541,0,0,.1);
+  // Pendant lamps hover over the table and back counter, with small warm pools.
+  for(const [x,y,z] of [[.4,4.8,.7],[-2,4.5,-2.7],[3.3,4.5,-2.7]]){limb(world,new THREE.Vector3(x,y+.2,z),new THREE.Vector3(x,y-.6,z),.018,0x514c3d);const shade=mesh(world,new THREE.ConeGeometry(.46,.32,24,1,true),0xb38748,x,y-.68,z,{side:THREE.DoubleSide});ball(world,.11,.12,.11,0xffe6a2,x,y-.81,z);const glow=new THREE.PointLight(0xffcd7c,3,5,2);glow.position.set(x,y-.9,z);scene.add(glow)}
+  // Little house rules: nobody takes themselves too seriously here.
+  sign(world,'SE ADMITEN FAROLES',2.5,.25,-3.9,.19,4.35,'#c09766','#785233','bold 56px Georgia').rotation.x=-Math.PI/2;
+  const pickables=[];world.traverse(o=>{if(o.isMesh){let a=o;while(a&&!a.userData.entity)a=a.parent;if(a)pickables.push(o)}});
+  let selected=null,signalUntil=0,dealStart=-100;
+  function update(t){for(const p of Object.values(people)){p.head.rotation.z=Math.sin(t*.85+p.phase)*.035;p.head.rotation.y=Math.sin(t*.52+p.phase)*.085;p.group.position.y=Math.sin(t*1.1+p.phase)*.012;for(let i=0;i<2;i++)p.arms[i].rotation.x=Math.sin(t*1.3+p.phase+i)*.025;if(p.id==='paco'){p.arms[0].rotation.z=.10+Math.sin(t*2.8)*.09;p.arms[1].rotation.x=-.07+Math.sin(t*5)*.13;p.arms[1].rotation.z=-.10+Math.cos(t*5)*.13;p.glass.rotation.z=Math.sin(t*2.8)*.14;p.cloth.position.y=2.06+Math.sin(t*5)*.045;p.cloth.position.x=-.18+Math.sin(t*5)*.065;p.cloth.position.z=.57+Math.cos(t*5)*.04}if(p.id==='lola'&&t<signalUntil){p.eyes[0].scale.y=.012;p.head.rotation.z=.12+Math.sin(t*7)*.045;p.arms[1].rotation.x=-.35}else p.eyes[0].scale.y=.057;}
+    const dt=t-dealStart;cards.forEach((c,i)=>{const u=THREE.MathUtils.clamp((dt-i*.065)/.5,0,1);if(dt<3){const ease=1-Math.pow(1-u,3);c.position.copy(c.userData.home);c.position.z+= (1-ease)*-.6;c.position.y+=Math.sin(u*Math.PI)*.35;c.scale.setScalar(.2+.8*ease)}else{c.position.copy(c.userData.home);c.scale.setScalar(1)}});
+  }
+  function cutaway(camera){back.visible=camera.position.z>-3.7;left.visible=camera.position.x>-5.1}
+  return {scene,world,people,cards,pickables,walls:{back,left},update,cutaway,select(id){selected=id},get selected(){return selected},signal(t){signalUntil=t+3.5},getHand(id='txuwa'){return hands[id].map(card=>({...card}))},deal(t){dealStart=t;hands=dealHands();for(const c of cards){const card=hands[c.userData.player][c.userData.index];c.userData.card=card;c.material.map=face(card);c.material.needsUpdate=true}},anchor(id){const d=PEOPLE[id];return id==='table'?new THREE.Vector3(.4,2,.7):new THREE.Vector3(d.x,3.05,d.z)},dispose(){scene.traverse(o=>{if(o.geometry)o.geometry.dispose()});}};
+}
+
+// Collisions keep a walking visitor inside the room and outside furniture.
+export function canWalk(x,z){if(x< -5.45||x>5.45||z< -3.85||z>4.1)return false;if(x> -3.9&&x<5.5&&z< -1.96)return false;if(x> -1.45&&x<2.22&&z>-.95&&z<2.27)return false;for(const id of ['txuwa','lola','bruno','nico']){const d=PEOPLE[id];if(Math.hypot(x-d.x,z-d.z)<.55)return false}if(Math.hypot(x+4.9,z-2.74)<.65)return false;return true}
+
+export {THREE};
