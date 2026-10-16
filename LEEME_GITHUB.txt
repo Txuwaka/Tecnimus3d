@@ -1,12 +1,15 @@
-TECNIMUSONLINE 3D - ALPHA 0.5 JUGABLE
+TECNIMUSONLINE 3D - ALPHA 0.6 JUGABLE
 16/10/2026
 
-RITMO TRANQUILO
+TABERNA VIEJA, PARTIDA A DOS SEGUNDOS
 
-La espera entre decisiones y acciones pasa a 3 segundos.
-Corto mus, quiero y ordago permanecen 4,5 segundos antes de continuar.
-Las señas duran 5,5 segundos y los bocadillos hasta 7,5 segundos.
+Paredes amarillentas y gastadas, madera apagada y materiales mates.
+Se han quitado los coloretes de todos los personajes.
+Las señas duran un segundo y no anuncian su significado en bocadillos.
+Todas las pausas de turnos y acciones, incluidos los ordagos, duran 2 segundos.
 Cuando te toca a ti, puedes pensar sin limite de tiempo.
+El rotulo es un escudo blanco con marco.
+El boton de sonido activa pajaritos suaves en vez del ambiente anterior.
 
 AHORA YA SE PUEDE JUGAR
 
@@ -42,7 +45,7 @@ ACTUALIZAR EL REPOSITORIO DEL BOCETO
 6. Espera a que termine el despliegue de Pages y abre tu web.
 7. Si sigue apareciendo el boceto anterior, pulsa Ctrl+F5.
 
-Los módulos game-ui.js, mus-game.js, mus-rules.js y profiles.js son necesarios.
+Los módulos game-ui.js, mus-game.js, mus-rules.js, profiles.js y birdsong.js son necesarios.
 Mantén todos los módulos del ZIP junto a index.html.
 No se necesitan npm, compilación, claves ni un servidor de partidas.
 

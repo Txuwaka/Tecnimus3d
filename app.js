@@ -1,6 +1,7 @@
-import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.5.0';
-import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.5.0';
-import {attachMusGame} from './game-ui.js?v=0.5.0';
+import {createBirdsongBuffer} from './birdsong.js?v=0.6.0';
+import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.6.0';
+import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.6.0';
+import {attachMusGame} from './game-ui.js?v=0.6.0';
 
 const $=id=>document.getElementById(id), stage=$('stage'), host=$('scene');
 let renderer,world,camera,bootStep="graphics";
@@ -8,7 +9,7 @@ try{
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'default'});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.6));renderer.setClearColor(0x000000,0);
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.02;
   host.appendChild(renderer.domElement);camera=new THREE.PerspectiveCamera(40,1,.08,100);
   bootStep="cards";
   const cardTextures=await loadCardTextures();
@@ -34,7 +35,7 @@ document.querySelectorAll('[data-suit]').forEach(b=>b.addEventListener('click',(
 $('cards-dialog').addEventListener('click',e=>{if(e.target===$('cards-dialog')){const r=$('cards-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeCards()}});
 
 function toast(msg){$('toast').textContent=msg;$('toast').hidden=false;clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>$('toast').hidden=true,3100)}
-function speak(name,line){$('speech').replaceChildren();const small=document.createElement('small');small.textContent=name.toUpperCase();$('speech').append(small,document.createTextNode('«'+line+'»'));$('speech').hidden=false;clearTimeout(speechTimeout);speechTimeout=setTimeout(()=>$('speech').hidden=true,7500)}
+function speak(name,line){$('speech').replaceChildren();const small=document.createElement('small');small.textContent=name.toUpperCase();$('speech').append(small,document.createTextNode('«'+line+'»'));$('speech').hidden=false;clearTimeout(speechTimeout);speechTimeout=setTimeout(()=>$('speech').hidden=true,2000)}
 function closeMenu(){$('sidebar').classList.remove('open');$('menu').setAttribute('aria-expanded','false')}
 function updateModeUI(){for(const m of ['inspect','walk']){const b=$(m+'-mode');b.classList.toggle('active',mode===m);b.setAttribute('aria-pressed',String(mode===m))}$('walk-pad').hidden=mode!=='walk';host.classList.toggle('walking',mode==='walk');$('control-hint').textContent=mode==='walk'?'WASD / flechas para caminar · Arrastra para mirar':'Arrastra para girar · Rueda para acercar'}
 function setView(id){mode='inspect';activeView=id;camera.fov=id==='seat'?playerViewFov(camera.aspect):40;world.setPlayerView(id==='seat');camera.updateProjectionMatrix();desiredPosition.fromArray(VIEWS[id].position);desiredTarget.fromArray(VIEWS[id].target);if(id==='general')fitGeneralView();transition=true;updateModeUI();document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===id);b.setAttribute('aria-pressed',String(b.dataset.view===id))});closeMenu();if(id==='bar')inspect('javiel',false);else if(id==='table')inspect('table',false);else if(id==='seat')inspect('txuwa',false);else inspect(null,false);host.focus({preventScroll:true})}
@@ -67,7 +68,21 @@ document.querySelectorAll('[data-walk]').forEach(b=>{const k={forward:'w',back:'
 
 let audioState=null;
 function chime(freq,duration){if(!audioState)return;const a=audioState.ctx,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(freq,a.currentTime);o.frequency.exponentialRampToValueAtTime(freq*1.4,a.currentTime+duration);g.gain.setValueAtTime(.08,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+duration);o.connect(g).connect(audioState.master);o.start();o.stop(a.currentTime+duration)}
-async function toggleSound(){if(audioState){await audioState.ctx.close();audioState=null;$('sound').setAttribute('aria-pressed','false');$('sound').setAttribute('aria-label','Activar ambiente sonoro');$('sound').title='Activar ambiente sonoro';return}try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw Error();const ctx=new Audio();await ctx.resume();const master=ctx.createGain();master.gain.value=.18;master.connect(ctx.destination);const buffer=ctx.createBuffer(1,ctx.sampleRate*4,ctx.sampleRate);const a=buffer.getChannelData(0);let prev=0;for(let i=0;i<a.length;i++){prev=(prev+Math.random()*.08-.04)/1.02;a[i]=prev}const noise=ctx.createBufferSource();noise.buffer=buffer;noise.loop=true;const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=550;const gain=ctx.createGain();gain.gain.value=.19;noise.connect(filter).connect(gain).connect(master);noise.start();const voices=[];for(const f of [130.81,196,261.63]){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.value=.015;o.connect(g).connect(master);o.start();voices.push(o)}audioState={ctx,master,voices};$('sound').setAttribute('aria-pressed','true');$('sound').setAttribute('aria-label','Silenciar ambiente sonoro');$('sound').title='Silenciar ambiente sonoro';toast('Ambiente suave activado. La tranquilidad también juega.')}catch{toast('No se ha podido activar el sonido en este navegador.')}}
+let soundBusy=false;
+async function toggleSound(){
+  if(soundBusy)return;soundBusy=true;
+  let openingContext=null;
+  try{
+    if(audioState){await audioState.ctx.close();audioState=null;$('sound').setAttribute('aria-pressed','false');$('sound').setAttribute('aria-label','Activar pajaritos');$('sound').title='Activar pajaritos';return}
+    const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw Error();
+    const ctx=new Audio();openingContext=ctx;await ctx.resume();
+    const master=ctx.createGain();master.gain.value=.18;master.connect(ctx.destination);
+    const birds=ctx.createBufferSource();birds.buffer=createBirdsongBuffer(ctx);birds.loop=true;birds.connect(master);birds.start();
+    audioState={ctx,master};openingContext=null;
+    $('sound').setAttribute('aria-pressed','true');$('sound').setAttribute('aria-label','Silenciar pajaritos');$('sound').title='Silenciar pajaritos';
+    toast('Pajaritos por la ventana. Javiel no les cobra la ronda.');
+  }catch{if(openingContext)await openingContext.close().catch(()=>{});toast('No se ha podido activar el sonido en este navegador.')}finally{soundBusy=false}
+}
 $('sound').onclick=toggleSound;
 
 function fitGeneralView(){// Keep the whole diorama inside a portrait viewport, too.

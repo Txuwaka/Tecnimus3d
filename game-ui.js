@@ -1,7 +1,7 @@
-import {MusGame,PLAYER_NAMES,PHASE_NAMES,SIGNAL_NAMES} from './mus-game.js?v=0.5.0';
-import {MusRules} from './mus-rules.js?v=0.5.0';
-import {cardName,cardURL} from './cards.js?v=0.5.0';
-import {loadProfile,saveProfile,normalizeProfile} from './profiles.js?v=0.5.0';
+import {MusGame,PLAYER_NAMES,PHASE_NAMES,SIGNAL_NAMES} from './mus-game.js?v=0.6.0';
+import {MusRules} from './mus-rules.js?v=0.6.0';
+import {cardName,cardURL} from './cards.js?v=0.6.0';
+import {loadProfile,saveProfile,normalizeProfile} from './profiles.js?v=0.6.0';
 
 export function attachMusGame({world,view,time,speak,toast,resume,markTurn,refreshCards,profileChanged=()=>{},storage,confirmReset=()=>true,engine=new MusGame()}){
   const $=id=>document.getElementById(id);
@@ -36,7 +36,7 @@ export function attachMusGame({world,view,time,speak,toast,resume,markTurn,refre
     $('game-turn-feed').textContent=s.history.slice(-4).join(' → ');
     const resolved=['summary','finished'].includes(s.stage);$('game-results').hidden=!resolved;$('game-results').replaceChildren();if(resolved){for(const row of s.result){const p=document.createElement('p'),b=document.createElement('b');b.textContent=PHASE_NAMES[row.phase]+' · '+(row.side==='nosotros'?'Nuestra pareja':'Rivales');p.append(b,document.createTextNode(row.ordago?' · Órdago querido':` +${row.points}`+(row.refused?' · envite ya cobrado':'')));$('game-results').appendChild(p)}const p=document.createElement('p');p.className='revealed-hands';p.textContent=['txuwa','nico','lola','bruno'].map(id=>players[id]+': '+s.hands[id].map(cardName).join(', ')).join(' / ');$('game-results').appendChild(p)}
     if(visible)markTurn(!s.paused&&s.actor?s.actor:null);
-    const event=s.lastAction;if(event&&event.sequence!==lastSequence){lastSequence=event.sequence;if(event.kind==='deal'){world.redeal(time());refreshCards()}else if(event.kind==='discard')world.discardCards(event.id,event.indices,time());else if(event.id&&visible){speak(players[event.id],event.label);if(event.kind==='ack')world.gesture(event.id,'ack',time());if(event.kind==='signal')world.gesture(event.id,event.key,time())}}
+    const event=s.lastAction;if(event&&event.sequence!==lastSequence){lastSequence=event.sequence;if(event.kind==='deal'){world.redeal(time());refreshCards()}else if(event.kind==='discard')world.discardCards(event.id,event.indices,time());else if(event.id&&visible){if(!['signal','ack'].includes(event.kind))speak(players[event.id],event.label);if(event.kind==='ack')world.gesture(event.id,'ack',time());if(event.kind==='signal')world.gesture(event.id,event.key,time())}}
     const gesture=s.signalEvent;if(gesture&&gesture.sequence!==lastSignal){lastSignal=gesture.sequence;world.gesture(gesture.id,gesture.key,time());if(visible&&gesture.to==='txuwa')toast(players[gesture.id]+' te hace una seña. Mira su cara.')}
     if(s.handNumber!==lastHand){lastHand=s.handNumber;$('game-amount').value='2';signalsOpen=false}
   }

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 254" role="img" aria-labelledby="title">
+  <title id="title">La taberna del órdago</title>
+  <path d="M31 20H409V149Q409 191 344 214L220 246 96 214Q31 191 31 149Z" fill="#fff" stroke="#655d46" stroke-width="7"/>
+  <path d="M43 32H397V148Q397 182 338 202L220 233 102 202Q43 182 43 148Z" fill="none" stroke="#b5aa88" stroke-width="2"/>
+  <g text-anchor="middle" fill="#514b3a" font-family="Georgia,serif">
+    <text x="220" y="68" font-size="26" letter-spacing="3">LA TABERNA</text>
+    <text x="220" y="96" font-size="16" font-style="italic">del</text>
+    <text x="220" y="144" font-size="51" font-weight="bold" letter-spacing="1">ÓRDAGO</text>
+    <text x="220" y="203" font-size="12" letter-spacing="4">TECNIMUS</text>
+  </g>
+  <path d="M102 88H170m100 0h68M117 165h61m84 0h61" stroke="#b5aa88" stroke-width="2"/>
+  <g fill="none" stroke="#766c50" stroke-width="2.5">
+    <rect x="203" y="159" width="23" height="29" rx="3" transform="rotate(-13 214 174)" fill="#fff"/>
+    <rect x="218" y="159" width="23" height="29" rx="3" transform="rotate(13 229 174)" fill="#fff"/>
+    <circle cx="214" cy="174" r="5"/><path d="M229 164v15m-5-3h10m-8 7h6"/>
+  </g>
+</svg>

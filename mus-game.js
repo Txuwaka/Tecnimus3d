@@ -1,5 +1,5 @@
-import {MusRules as R} from './mus-rules.js?v=0.5.0';
-import {normalizeProfile,seatRoster} from './profiles.js?v=0.5.0';
+import {MusRules as R} from './mus-rules.js?v=0.6.0';
+import {normalizeProfile,seatRoster} from './profiles.js?v=0.6.0';
 
 export const PLAYER_NAMES={txuwa:'Jugador',nico:'Nico',lola:'Lola',bruno:'Bruno'};
 export const PHASE_NAMES={GRANDE:'Grande',CHICA:'Chica',PARES:'Pares',JUEGO:'Juego',PUNTO:'Punto'};
@@ -8,7 +8,7 @@ export const SIGNAL_NAMES={reyes:'Dos reyes',ases:'Dos ases','medias-reyes':'Med
 // The mus engine owns the game. It has no dependency on DOM, Three.js or Godot.
 // Its state transitions and scoring follow reference/tecnimus-original.js.
 export class MusGame{
-  constructor({delay=3000,random=Math.random,setTimer=(fn,ms)=>globalThis.setTimeout(fn,ms),clearTimer=id=>globalThis.clearTimeout(id),now=Date.now,initialMano=null,profile={}}={}){
+  constructor({delay=2000,random=Math.random,setTimer=(fn,ms)=>globalThis.setTimeout(fn,ms),clearTimer=id=>globalThis.clearTimeout(id),now=Date.now,initialMano=null,profile={}}={}){
     this.delay=delay;this.random=random;this.setTimer=setTimer;this.clearTimer=clearTimer;this.now=now;this.initialMano=initialMano;this.profile=normalizeProfile(profile);this.roster=seatRoster(this.profile);this.jobs=new Set();this.listeners=new Set();this.generation=0;this.sequence=0;
     this.state={stage:'idle',profile:this.profile,names:Object.fromEntries(Object.entries(this.roster).map(([id,p])=>[id,p.name])),hands:{},selected:[],scores:{nosotros:0,ellos:0},handNumber:0,mano:0,phaseIndex:0,phases:[],bets:{},actor:null,waiting:false,paused:false,offer:null,revealed:false,result:[],history:[],message:'La mesa está lista.',detail:'Elige tu nombre y tu compañero.',lastAction:null,signalReceipt:''};
   }
@@ -29,7 +29,7 @@ export class MusGame{
   _side(id){return R.sides[id]}
   _qualifies(id){return R.qualifies(this.state.hands[id],this.phase())}
   _event(id,label,kind='call',extra={}){const s=this.state;s.lastAction={sequence:++this.sequence,id,label,kind,...extra};if(id)s.calls[id]=label;s.history.push((id?this._name(id)+': ':'')+label);if(s.history.length>100)s.history.shift()}
-  _say(id,label,detail,next=()=>this._step(),kind='call',extra={}){const s=this.state;this._event(id,label,kind,extra);s.actor=id;s.waiting=false;s.message=this._name(id)+': '+label;s.detail=detail||'Sigue el turno a derechas.';const readingTime=/ÓRDAGO|CORTO MUS|QUIERO/.test(label)?Math.round(this.delay*1.5):this.delay;this._after(next,readingTime);this._emit()}
+  _say(id,label,detail,next=()=>this._step(),kind='call',extra={}){const s=this.state;this._event(id,label,kind,extra);s.actor=id;s.waiting=false;s.message=this._name(id)+': '+label;s.detail=detail||'Sigue el turno a derechas.';this._after(next);this._emit()}
   _step(){const s=this.state;if(s.paused)return;if(s.stage==='mus')this._musStep();else if(s.stage==='declarations')this._declarationStep();else if(s.stage==='opening')this._openingStep();else if(s.stage==='response')this._responseStep()}
   _wait(id,message,detail){const s=this.state;this._maybeAISignal();s.actor=id;s.waiting=id==='txuwa';s.message=message;s.detail=detail;this._emit()}
   toggleCard(i){const s=this.state;if(s.paused||s.stage!=='mus'||s.actor!=='txuwa'||!s.waiting||!Number.isInteger(i)||i<0||i>3)return false;s.selected=s.selected.includes(i)?s.selected.filter(x=>x!==i):[...s.selected,i];this._emit();return true}
