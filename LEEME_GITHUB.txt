@@ -1,9 +1,12 @@
-TECNIMUSONLINE 3D - ALPHA 0.3 JUGABLE
+TECNIMUSONLINE 3D - ALPHA 0.4 JUGABLE
 16/10/2026
 
 AHORA YA SE PUEDE JUGAR
 
-Pulsa Jugar al mus. Tú y Lola sois pareja frente a Nico y Bruno.
+Pulsa Jugar al mus y elige tu nombre y tu compañero (Lola, Bruno o Nico).
+Tu pareja se sienta enfrente y los otros dos son los rivales.
+La primera mano se sortea y después rota a derechas.
+Javiel, calvo y con gafas, sigue limpiando su vaso.
 Tus tres compañeros de mesa están controlados por la máquina.
 La partida se juega a 40 piedras con la baraja de Tecnimus.
 
@@ -16,7 +19,7 @@ La partida se juega a 40 piedras con la baraja de Tecnimus.
 - QUIERO / NO QUIERO: responde a la apuesta de la otra pareja.
 - MOSTRAR CARTAS: descubre las manos y cuenta las piedras.
 - SIGUIENTE MANO: continúa con la mano a la derecha.
-- HACER UNA SEÑA: aparecen las disponibles para tus cartas; Lola responde.
+- HACER UNA SEÑA: aparecen las disponibles para tus cartas; tu compañero responde.
 - EXPLORAR: pausa la partida para recorrer el bar.
 - VOLVER A LA PARTIDA: continúa desde donde la dejaste.
 - NUEVA: reinicia la partida tras confirmación.
@@ -32,7 +35,7 @@ ACTUALIZAR EL REPOSITORIO DEL BOCETO
 6. Espera a que termine el despliegue de Pages y abre tu web.
 7. Si sigue apareciendo el boceto anterior, pulsa Ctrl+F5.
 
-Los nuevos módulos game-ui.js, mus-game.js y mus-rules.js son necesarios.
+Los módulos game-ui.js, mus-game.js, mus-rules.js y profiles.js son necesarios.
 Mantén todos los módulos del ZIP junto a index.html.
 No se necesitan npm, compilación, claves ni un servidor de partidas.
 
@@ -59,12 +62,16 @@ ALCANCE DE ESTA VERSIÓN
 
 Partida local con IA básica, sin salas online, servidor ni chat de voz.
 La lógica del mus procede de la versión guardada del juego del 07/10/2026.
-La escena y los controles son la primera integración 3D jugable.
+Nombre y pareja se guardan en el navegador. Usa Nombre y compañero
+o el botón Jugadores para cambiarlos antes de una nueva partida.
+La cámara Mi silla permite ver los rostros y las señas de los tres jugadores.
+Ver mesa alterna con una vista general de la mesa.
 No se ha modificado ni subido nada automáticamente a tu GitHub.
 
 VALIDACIÓN
 
-El motor pasa 100 partidas simuladas: 793 manos y más de 33.000 transiciones.
+El motor pasa 100 partidas simuladas. Se verifica también el receptor
+de los temporizadores del navegador y un ciclo completo MUS/descarte/reparto.
 También pasan las pruebas de escena y una mano completa desde los controles
 de interfaz en un DOM simulado. Se comprueban cartas sin duplicados, turnos,
 descartes, reenvites, respuesta de la pareja, puntuación y pausa.
