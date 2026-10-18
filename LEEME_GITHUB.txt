@@ -1,5 +1,42 @@
-TECNIMUSONLINE 3D - ALPHA 0.7 JUGABLE
-16/10/2026
+TECNIMUSONLINE 3D - ALPHA 0.10 JUGABLE
+18/10/2026
+
+NOVEDADES: LA MESA TIENE CUADERNO
+
+- Corregido: primera mano COMPLETA sin señas, antes y despues de cortar.
+  Incluye lances y conteo. Las señas vuelven en la segunda mano.
+- Cuaderno de Javiel: repasa jugadas y marcador por manos.
+  La IA se pausa mientras lo lees. Se guarda solo en este navegador.
+  No revela señas privadas ni cartas ocultas. Una nueva partida lo reemplaza.
+- Ritmo de mesa: alterna entre 2, 4 y 1 segundo desde la partida.
+  Se recuerda en el navegador. Tu turno sigue sin limite de tiempo.
+- Conteo explicado: muestra la combinacion ganadora, empates por mano
+  y etiquetas de los lances ganados junto a las cartas.
+- El visor de cartas tambien pausa la IA mientras lo miras.
+
+Fuentes que han orientado estas mejoras:
+https://steamcommunity.com/app/4429430/discussions/0/583935357196960151/
+https://steamcommunity.com/app/247000/discussions/0/666826250690361828/
+https://forocoches.com/foro/showthread.php?t=9035988
+
+MUS CORRIDO INICIAL OPCIONAL
+
+En Nombre y compañero tienes Primera mano: mus corrido y sin señas.
+Aparece activado por defecto y puedes desactivarlo antes de empezar.
+Las señas estan bloqueadas TODA la primera mano, tambien para la IA.
+Si todos dan mus, se descarta y corre la mano provisional un puesto.
+Quien corta pasa a ser mano; las señas siguen bloqueadas hasta la segunda mano.
+Las manos siguientes rotan a derechas desde esa mano definitiva.
+La baraja esta en el tapete a la izquierda de quien sea mano.
+En el corrido inicial va acompañando a quien esta decidiendo.
+
+BOCADILLOS Y CONTEO MAS CLAROS
+
+Cada personaje tiene un color propio de bocadillo y etiqueta de turno.
+Bruno tiene un bigote mas fino y rizado que deja ver la boca.
+Al mostrar cartas se abre el conteo con las cuatro manos en imagen.
+Puedes revisar las cartas y puntos sin prisa, volver a la mesa o seguir.
+El boton Ver las cuatro manos del conteo lo abre de nuevo.
 
 REY DE TECNIMUS Y CARTAS BOCA ABAJO
 
@@ -23,7 +60,8 @@ AHORA YA SE PUEDE JUGAR
 
 Pulsa Jugar al mus y elige tu nombre y tu compañero (Lola, Bruno o Nico).
 Tu pareja se sienta enfrente y los otros dos son los rivales.
-La primera mano se sortea y después rota a derechas.
+Con corrido, el primer corte fija la mano; despues rota a derechas.
+Sin corrido, la primera mano se sortea.
 Javiel, calvo y con gafas, sigue limpiando su vaso.
 Tus tres compañeros de mesa están controlados por la máquina.
 La partida se juega a 40 piedras con la baraja de Tecnimus.
@@ -53,7 +91,7 @@ ACTUALIZAR EL REPOSITORIO DEL BOCETO
 6. Espera a que termine el despliegue de Pages y abre tu web.
 7. Si sigue apareciendo el boceto anterior, pulsa Ctrl+F5.
 
-Los módulos game-ui.js, mus-game.js, mus-rules.js, profiles.js y birdsong.js son necesarios.
+Los módulos game-ui.js, mus-game.js, mus-rules.js, profiles.js, birdsong.js, review.js y table-tools.js son necesarios.
 Mantén todos los módulos del ZIP junto a index.html.
 No se necesitan npm, compilación, claves ni un servidor de partidas.
 

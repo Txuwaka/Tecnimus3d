@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#eee4c5"><meta name="robots" content="noindex,nofollow">
   <meta name="description" content="Entra en la taberna de TecnimusOnline. Explora un pequeño mundo 3D lleno de mus, sonrisas y algún que otro farol.">
   <title>TecnimusOnline 3D · La taberna del órdago</title>
-  <link rel="icon" href="./favicon.svg?v=0.7.0" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./favicon.svg?v=0.10.0" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=0.10.0">
 </head>
 <body>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -25,7 +25,7 @@
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
   </defs></svg>
   <header class="header">
-    <a class="brand" href="./" aria-label="TecnimusOnline, inicio"><span class="brand-mark"><img src="./favicon.svg?v=0.7.0" width="44" height="44" alt="Rey de la baraja Tecnimus"></span><span><strong>Tecni<span>mus</span><small>ONLINE</small></strong><em>La buena partida empieza aquí.</em></span></a>
+    <a class="brand" href="./" aria-label="TecnimusOnline, inicio"><span class="brand-mark"><img src="./favicon.svg?v=0.10.0" width="44" height="44" alt="Rey de la baraja Tecnimus"></span><span><strong>Tecni<span>mus</span><small>ONLINE</small></strong><em>La buena partida empieza aquí.</em></span></a>
     <div class="header-center"><span class="tiny-dot"></span> EL SIGUIENTE CAPÍTULO <span class="header-line"></span> <b>3D</b></div>
     <div class="header-right"><span class="privacy"><svg><use href="#i-cube"/></svg> Alpha <span>· Mus 3D</span></span><button id="menu" class="icon-button mobile-menu" title="Abrir explorador" aria-expanded="false"><svg><use href="#i-menu"/></svg></button></div>
   </header>
@@ -42,10 +42,11 @@
       <div class="cast-section"><div class="section-label">LA CUADRILLA <span>4 + 1</span></div><div class="cast" role="group" aria-label="Inspeccionar personajes">
         <button data-select="txuwa" class="avatar a1" title="Tú" aria-label="Inspeccionar al jugador">T</button><button data-select="lola" class="avatar a2" title="Lola · Tu compañera" aria-label="Inspeccionar a Lola">L</button><button data-select="bruno" class="avatar a3" title="Bruno · Rival" aria-label="Inspeccionar a Bruno">B</button><button data-select="nico" class="avatar a4" title="Nico · Rival" aria-label="Inspeccionar a Nico">N</button><span class="cast-divider"></span><button data-select="javiel" class="avatar a5" title="Javiel · Camarero" aria-label="Inspeccionar a Javiel">P</button>
       </div></div>
+      <button id="journal-open" class="profile-open">Cuaderno de Javiel <span>↗</span></button>
       <button id="profile-open" class="profile-open">Nombre y compañero <span>↗</span></button>
       <button id="game-start" class="start-game">Jugar al mus <span>→</span></button>
       <button id="cards-open" class="cards-open"><svg><use href="#i-cards"/></svg><span><b>Nuestras cartas</b><small>Tu mano y la baraja completa</small></span><svg><use href="#i-arrow"/></svg></button>
-      <div class="sidebar-foot"><span class="sketch-cards">♧</span><p>«Aquí el único que trabaja<br>es el que limpia el vaso.»</p><span class="footnote">ALPHA JUGABLE · V0.7</span></div>
+      <div class="sidebar-foot"><span class="sketch-cards">♧</span><p>«Aquí el único que trabaja<br>es el que limpia el vaso.»</p><span class="footnote">ALPHA JUGABLE · V0.10</span></div>
     </aside>
     <main id="stage" class="stage">
       <div id="scene" class="scene" role="application" aria-label="Taberna 3D interactiva. Arrastra para girar y usa la rueda para acercar. Los botones de vistas y personajes permiten explorar con teclado." tabindex="0"></div>
@@ -63,17 +64,30 @@
       <section id="game-panel" class="game-panel" hidden aria-label="Partida de mus">
         <div class="game-toolbar"><div class="scoreboard"><span><span id="game-team">TU PAREJA</span> <b id="game-us">0</b></span><i>40</i><span><b id="game-them">0</b> RIVALES</span></div><span class="game-local">PARTIDA LOCAL · IA</span><div class="game-tools"><button id="game-players">Jugadores</button><button id="game-camera">Ver mesa</button><button id="game-new">Nueva</button><button id="game-exit">Explorar</button></div></div>
         <div class="game-body"><div class="game-hand-wrap"><p id="game-hand-note">Tus cuatro cartas</p><div id="game-hand" class="game-hand" role="group" aria-label="Selecciona cartas para descartar"></div><p id="game-strength"></p></div><div class="game-decision"><div class="game-phase-row"><span id="game-phase">MUS</span><span id="game-mano"></span><b id="game-offer" hidden></b></div><h3 id="game-message" aria-live="polite">La mesa está lista.</h3><p id="game-detail"></p><div id="game-bet-row" class="game-bet-row" hidden><label for="game-amount">Piedras / subida</label><input id="game-amount" type="number" min="2" step="1" value="2" inputmode="numeric"></div><div id="game-actions" class="game-actions"></div><div class="game-signal-row"><button id="game-signal-toggle" aria-expanded="false">Hacer una seña</button><small id="game-signal-receipt"></small></div><div id="game-signals" class="game-signals" hidden></div></div></div>
-        <p id="game-turn-feed" class="game-turn-feed" role="log" aria-live="off"></p><div id="game-results" class="game-results" hidden></div>
+        <div class="table-tools"><button id="game-journal">Cuaderno de Javiel ↗</button><button id="game-speed">Ritmo · 2 s</button></div>
+        <p id="game-turn-feed" class="game-turn-feed" role="log" aria-live="off"></p><button id="game-count-open" class="count-reopen" hidden>Ver las cuatro manos del conteo ↗</button><div id="game-results" class="game-results" hidden></div>
       </section>
       <span class="dimension-note">HECHO PARA ECHAR UN BUEN RATO</span>
       <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
     </main>
   </div>
+  <dialog id="journal-dialog" class="journal-dialog" aria-labelledby="journal-title" aria-describedby="journal-note">
+    <div class="journal-heading"><div><span class="eyebrow">JAVIEL LO APUNTA TODO</span><h2 id="journal-title">El cuaderno de la mesa</h2><p id="journal-note">La partida espera mientras lees. Guardado en este navegador.</p></div><button id="journal-close" class="icon-button" aria-label="Cerrar cuaderno">×</button></div>
+    <p id="journal-summary" class="journal-summary"></p><div id="journal-ledger" class="journal-ledger"></div>
+    <div class="journal-footer"><small>Jugadas públicas y puntuación. Las señas se quedan entre compañeros.</small><button id="journal-back">Volver a la mesa</button></div>
+  </dialog>
+  <dialog id="count-dialog" class="count-dialog" aria-labelledby="count-title" aria-describedby="count-note">
+    <div class="count-heading"><div><span class="eyebrow">LAS CARTAS, SIN FAROLES</span><h2 id="count-title">El conteo</h2><p id="count-note"></p></div><button id="count-close" class="icon-button" aria-label="Cerrar conteo">×</button></div>
+    <div id="count-summary" class="count-summary" aria-label="Puntos de cada lance"></div>
+    <div id="count-hands" class="count-hands" aria-label="Las cuatro manos descubiertas"></div>
+    <div class="count-footer"><button id="count-table">Volver a la mesa</button><button id="count-next" class="count-primary">Siguiente mano →</button></div>
+  </dialog>
   <dialog id="player-setup" class="player-setup" aria-labelledby="profile-title">
     <form id="profile-form">
       <span class="eyebrow">ANTES DE ECHAR LA PARTIDA</span><h2 id="profile-title">Tu sitio en la mesa.</h2><p>Elige cómo te llamas y quién te cubre los faroles.</p>
       <label for="profile-name">Tu nombre</label><input id="profile-name" name="playerName" type="text" maxlength="24" required autocomplete="nickname" placeholder="Escribe tu nombre" autofocus>
       <label for="profile-partner">Tu compañero</label><select id="profile-partner" name="partner"><option value="lola">Lola · La reina del farol</option><option value="bruno">Bruno · El bigote tiene un plan</option><option value="nico">Nico · Cálculos y croquetas</option></select>
+      <label class="profile-rule" for="profile-corrido"><input id="profile-corrido" name="firstHandCorrido" type="checkbox" checked><span><b>Primera mano: mus corrido y sin señas</b><small>Quien corta es mano. Sin señas en toda la primera; se activan en la segunda.</small></span></label>
       <div class="profile-tip">Tu compañero se sentará enfrente de ti. Los otros dos formarán la pareja rival.</div><p id="profile-error" class="profile-error" role="alert" hidden></p>
       <div class="profile-actions"><button id="profile-cancel" type="button">Volver</button><button class="profile-submit" type="submit">Sentarse a jugar →</button></div><small>El nombre y la pareja se recuerdan en este navegador.</small>
     </form>
@@ -85,6 +99,6 @@
     <div id="cards-grid" class="cards-grid" aria-live="polite"></div>
     <div class="cards-dialog-foot"><span id="cards-caption">Tu mano de muestra · 4 cartas</span><small>Fuera hay tres colegas esperando tu farol.</small></div>
   </dialog>
-  <script type="module" src="./app.js?v=0.7.0"></script>
+  <script type="module" src="./app.js?v=0.10.0"></script>
 </body>
 </html>
