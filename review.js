@@ -1,4 +1,4 @@
-import {MusRules as R} from './mus-rules.js?v=0.10.0';
+import {MusRules as R} from './mus-rules.js?v=0.15.0';
 
 const rankName=n=>({1:'as',10:'sota',11:'caballo',12:'rey'}[n]||String(n));
 
