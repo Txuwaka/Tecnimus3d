@@ -1,10 +1,10 @@
-import {attachTableTools} from './table-tools.js?v=0.15.0';
-import {explainLance} from './review.js?v=0.15.0';
-import {MusGame,PLAYER_NAMES,PHASE_NAMES,SIGNAL_NAMES} from './mus-game.js?v=0.15.0';
-import {MusRules} from './mus-rules.js?v=0.15.0';
-import {cardName,cardURL} from './cards.js?v=0.15.0';
-import {loadProfile,saveProfile,normalizeProfile,PARTNERS,CHARACTER_NAMES} from './profiles.js?v=0.15.0';
-import {javielLine} from './javiel.js?v=0.15.0';
+import {attachTableTools} from './table-tools.js?v=0.16.0';
+import {explainLance} from './review.js?v=0.16.0';
+import {MusGame,PLAYER_NAMES,PHASE_NAMES,SIGNAL_NAMES} from './mus-game.js?v=0.16.0';
+import {MusRules} from './mus-rules.js?v=0.16.0';
+import {cardName,cardURL} from './cards.js?v=0.16.0';
+import {loadProfile,saveProfile,normalizeProfile,PARTNERS,CHARACTER_NAMES} from './profiles.js?v=0.16.0';
+import {javielLine} from './javiel.js?v=0.16.0';
 
 // Public turn information only. A private signal must never steal the turn.
 export function turnCue(s){

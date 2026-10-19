@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#eee4c5"><meta name="robots" content="noindex,nofollow">
   <meta name="description" content="Entra en la taberna de TecnimusOnline. Explora un pequeño mundo 3D lleno de mus, sonrisas y algún que otro farol.">
   <title>TecnimusOnline 3D · La taberna del órdago</title>
-  <link rel="icon" href="./favicon.svg?v=0.15.0" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=0.15.0">
+  <link rel="icon" href="./favicon.svg?v=0.16.0" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=0.16.0">
 </head>
 <body>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -25,12 +25,13 @@
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
   </defs></svg>
   <header class="header">
-    <a class="brand" href="./" aria-label="TecnimusOnline, inicio"><span class="brand-mark"><img src="./favicon.svg?v=0.15.0" width="44" height="44" alt="Rey de la baraja Tecnimus"></span><span><strong>Tecni<span>mus</span><small>ONLINE</small></strong><em>La buena partida empieza aquí.</em></span></a>
+    <a class="brand" href="./" aria-label="TecnimusOnline, inicio"><span class="brand-mark"><img src="./favicon.svg?v=0.16.0" width="44" height="44" alt="Rey de la baraja Tecnimus"></span><span><strong>Tecni<span>mus</span><small>ONLINE</small></strong><em>La buena partida empieza aquí.</em></span></a>
     <div class="header-center"><span class="tiny-dot"></span> EL SIGUIENTE CAPÍTULO <span class="header-line"></span> <b>3D</b></div>
-    <div class="header-right"><span class="privacy"><svg><use href="#i-cube"/></svg> Beta <span>· Mus 3D</span></span><button id="menu" class="icon-button mobile-menu" title="Abrir explorador" aria-expanded="false"><svg><use href="#i-menu"/></svg></button></div>
+    <div class="header-right"><span class="privacy"><svg><use href="#i-cube"/></svg> Beta <span>· Mus 3D</span></span><button id="menu" class="icon-button sidebar-toggle" type="button" title="Abrir menú lateral" aria-label="Abrir menú lateral" aria-controls="sidebar" aria-expanded="false"><svg aria-hidden="true"><use href="#i-menu"/></svg><span>Menú</span></button></div>
   </header>
   <div class="workspace">
-    <aside id="sidebar" class="sidebar" aria-label="Explorador de la taberna">
+    <aside id="sidebar" class="sidebar" aria-label="Explorador de la taberna" hidden>
+      <div class="sidebar-top"><span class="eyebrow">EXPLORADOR</span><button id="sidebar-close" class="icon-button" type="button" aria-label="Cerrar menú lateral" title="Cerrar menú lateral">×</button></div>
       <div class="sidebar-intro"><span class="eyebrow">BIENVENIDO A TU TABERNA</span><h1>Una mesa.<br>Cuatro colegas.<br><i>Mil faroles.</i></h1><p>El pequeño gran mundo de<br>TecnimusOnline, ahora en 3D.</p></div>
       <div class="section-label">ELIGE DÓNDE MIRAR <span>01 — 04</span></div>
       <nav class="views" aria-label="Vistas de cámara">
@@ -46,8 +47,9 @@
       <button id="profile-open" class="profile-open">Nombre y compañero <span>↗</span></button>
       <button id="game-start" class="start-game">Jugar al mus <span>→</span></button>
       <button id="cards-open" class="cards-open"><svg><use href="#i-cards"/></svg><span><b>Nuestras cartas</b><small>Tu mano y la baraja completa</small></span><svg><use href="#i-arrow"/></svg></button>
-      <div class="sidebar-foot"><span class="sketch-cards">♧</span><p>«Aquí el único que trabaja<br>es el que limpia el vaso.»</p><span class="footnote">BETA JUGABLE · V0.15</span></div>
+      <div class="sidebar-foot"><span class="sketch-cards">♧</span><p>«Aquí el único que trabaja<br>es el que limpia el vaso.»</p><span class="footnote">BETA JUGABLE · V0.16</span></div>
     </aside>
+    <button id="sidebar-backdrop" class="sidebar-backdrop" type="button" aria-label="Cerrar menú lateral" tabindex="-1" hidden></button>
     <main id="stage" class="stage">
       <div id="scene" class="scene" role="application" aria-label="Taberna 3D interactiva. Arrastra para girar y usa la rueda para acercar. Los botones de vistas y personajes permiten explorar con teclado." tabindex="0"></div>
       <div id="loading" class="loading"><span class="loader-cards">♠</span><b>Estamos poniendo el tapete…</b><small>Hoy invita la casa a un buen rato.</small></div>
@@ -106,6 +108,6 @@
     <div id="cards-grid" class="cards-grid" aria-live="polite"></div>
     <div class="cards-dialog-foot"><span id="cards-caption">Tu mano de muestra · 4 cartas</span><small>Fuera hay tres colegas esperando tu farol.</small></div>
   </dialog>
-  <script type="module" src="./app.js?v=0.15.0"></script>
+  <script type="module" src="./app.js?v=0.16.0"></script>
 </body>
 </html>

@@ -226,3 +226,12 @@
 .count-footer button{padding:9px 11px;border:1px solid #bba77c;border-radius:7px;background:#eee4ca;color:#6a5635;font-size:11px;min-height:40px}.count-footer .count-primary{background:#6d765d;border-color:#5b654d;color:#fff8e9}
 @media(max-width:500px){.count-dialog{padding:10px;gap:7px}.count-heading h2{font-size:21px}.count-heading p{font-size:10px}.count-hands{gap:6px}.count-player{padding:5px}.count-player h3{font-size:11px;gap:3px}.count-player h3 small{font-size:8px}.count-player p{font-size:9px}.count-player .count-wins{font-size:8px}.count-summary{padding:6px 7px;gap:4px 7px}.count-summary p{font-size:9px}.count-explanation summary{font-size:10px}.count-footer button{padding:8px;font-size:10px}.count-footer{gap:4px}}
 @media(orientation:landscape) and (max-height:540px){.count-dialog{width:96vw;height:94dvh;padding:10px;gap:6px}.count-heading h2{font-size:20px}.count-heading p{font-size:10px}.count-summary{grid-template-columns:repeat(4,minmax(0,1fr));padding:5px 8px}.count-hands{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:minmax(0,1fr);gap:6px}.count-player{padding:5px}.count-player h3{font-size:11px}.count-player p{font-size:9px}.count-dialog>.javiel-comment{padding:4px 8px}.count-dialog>.javiel-comment span{font-size:11px}}
+
+/* The explorer is an overlay on every screen; the table keeps the full width. */
+.workspace{position:relative}
+.workspace .sidebar{position:absolute;top:0;bottom:0;left:0;width:min(304px,88vw);max-width:calc(100vw - 16px);padding:16px 20px;transform:none;box-shadow:10px 0 35px #302b2344;z-index:15}
+.workspace .sidebar.open{transform:none}
+.sidebar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.sidebar-top .icon-button{font-size:24px;min-width:38px;height:38px}
+.sidebar-backdrop{position:absolute;inset:0;z-index:14;border:0;border-radius:0;padding:0;background:#302b2355;cursor:default}
+#menu.sidebar-toggle{display:inline-flex;align-items:center;gap:7px;padding:0 11px;min-height:38px}#menu span{font-size:11px}
+@media(max-width:700px){#menu.sidebar-toggle{width:36px;padding:0}#menu span{display:none}}

@@ -1,4 +1,4 @@
-# TecnimusOnline 3D · Beta 0.15
+# TecnimusOnline 3D · Beta 0.16
 
 Copia web completa para subir a tu repositorio de GitHub.
 Versión: 19/10/2026.
@@ -22,6 +22,10 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 Abre http://localhost:8000. Cierra el servidor con Ctrl+C. Abrir el HTML directamente puede bloquear los módulos del navegador.
 
+## Menú lateral oculto en PC
+
+La mesa utiliza todo el ancho de la pantalla. Pulsa «Menú» en la cabecera para desplegar la columna izquierda. Puedes cerrarla con el mismo botón, con la cruz, al pulsar fuera o con Escape. Elegir una vista o personaje también la cierra.
+
 ## Incluye los últimos ajustes
 
 - Cuatro nombres editables, guardados en el navegador. Javiel conserva el suyo.
@@ -40,4 +44,4 @@ Esta versión supera cien partidas simuladas, las pruebas de geometría y las de
 
 No requiere compilación, claves, servicios externos ni servidor de partidas. Incluye Three.js y su licencia MIT en `vendor`. Esta copia no contiene el proyecto nativo de Godot.
 
-Código de origen: `c55f293346a5f5648613de17368515ab5fae36a2`.
+Código de origen: `6376bc0dfafce4ebb7c9bb239305aa8a41fc5960`.
