@@ -1,7 +1,7 @@
-import {createBirdsongBuffer} from './birdsong.js?v=0.16.0';
-import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.16.0';
-import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.16.0';
-import {attachMusGame} from './game-ui.js?v=0.16.0';
+import {createBirdsongBuffer} from './birdsong.js?v=0.17.0';
+import {THREE,createWorld,PEOPLE,VIEWS,canWalk,playerViewFov} from './scene.js?v=0.17.0';
+import {loadCardTextures,cardName,cardURL,RANKS,SUIT_NAMES} from './cards.js?v=0.17.0';
+import {attachMusGame} from './game-ui.js?v=0.17.0';
 
 const $=id=>document.getElementById(id), stage=$('stage'), host=$('scene');
 let renderer,world,camera,bootStep="graphics";
@@ -80,7 +80,9 @@ $('pause').onclick=()=>{paused=!paused;gameUI.pause(paused);$('pause').setAttrib
 function resumeForAction(){if(paused)$('pause').click()}
 $('signal').onclick=()=>{if(gameUI.active){gameUI.showSignals();return}resumeForAction();if(mode==='walk'||activeView==='bar')setView('table');world.signal(time);inspect('lola',false);speak(world.getPerson('lola').name,'¡Seña recibida, compañero! A mí no se me escapa una.','lola');if(audioState)chime(600,.10)};
 $('deal').onclick=()=>gameUI.start();
-$('fullscreen').onclick=async()=>{try{if(!document.fullscreenElement){if(!stage.requestFullscreen){toast('La pantalla completa no está disponible en este navegador.');return}await stage.requestFullscreen()}else await document.exitFullscreen()}catch{toast('El navegador no permite la pantalla completa aquí.')}};
+function syncFullscreenButton(){const active=!!document.fullscreenElement,label=active?'Salir de pantalla completa':'Pantalla completa';$('fullscreen').setAttribute('aria-pressed',String(active));$('fullscreen').setAttribute('aria-label',label);$('fullscreen').title=label}
+$('fullscreen').onclick=async()=>{try{if(!document.fullscreenElement){const page=document.documentElement;if(!page?.requestFullscreen){toast('La pantalla completa no está disponible en este navegador.');return}await page.requestFullscreen()}else await document.exitFullscreen();syncFullscreenButton()}catch{toast('El navegador no permite la pantalla completa aquí.')}};
+document.addEventListener('fullscreenchange',syncFullscreenButton);
 function zoom(factor){if(mode==='walk'){camera.fov=THREE.MathUtils.clamp(camera.fov*factor,32,70);camera.updateProjectionMatrix();return}syncOrbit();orbit.radius=THREE.MathUtils.clamp(orbit.radius*factor,1.15,25);camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));camera.lookAt(target)}
 $('zoom-in').onclick=()=>zoom(.86);$('zoom-out').onclick=()=>zoom(1.16);
 

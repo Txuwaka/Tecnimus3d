@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three.module.js';
-import {createCardHands} from './held-cards.js?v=0.16.0';
-import {INITIAL_HANDS,dealHands,cardKey} from './cards.js?v=0.16.0';
-import {normalizeProfile,seatRoster} from './profiles.js?v=0.16.0';
+import {createCardHands} from './held-cards.js?v=0.17.0';
+import {INITIAL_HANDS,dealHands,cardKey} from './cards.js?v=0.17.0';
+import {normalizeProfile,seatRoster} from './profiles.js?v=0.17.0';
 
 export const PEOPLE = {
   txuwa: {name:'Jugador', role:'TÚ · EQUIPO DEL TAPETE', title:'Tu sitio está reservado.', copy:'Sudadera roja, cara de buena gente y una mano que nadie debería subestimar. Lola se sienta enfrente: es tu compañera.', meta:'Sur de la mesa · Pareja con Lola', color:0x8d6757, skin:0xe8b18b, hair:0x553b2b, x:.4,z:2.65, rot:Math.PI, type:'beard', quote:'¡Yo he venido a aprender… y a ganar!'},

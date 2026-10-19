@@ -1,4 +1,4 @@
-# TecnimusOnline 3D · Beta 0.16
+# TecnimusOnline 3D · Beta 0.17
 
 Copia web completa para subir a tu repositorio de GitHub.
 Versión: 19/10/2026.
@@ -22,6 +22,10 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 Abre http://localhost:8000. Cierra el servidor con Ctrl+C. Abrir el HTML directamente puede bloquear los módulos del navegador.
 
+## Cabecera y pantalla completa
+
+La cabecera dice «Un juego de Tecnología Punta». El botón de pantalla completa amplía toda la página, con la barra superior y el menú incluidos. Pulsa de nuevo el botón o Escape para salir.
+
 ## Menú lateral oculto en PC
 
 La mesa utiliza todo el ancho de la pantalla. Pulsa «Menú» en la cabecera para desplegar la columna izquierda. Puedes cerrarla con el mismo botón, con la cruz, al pulsar fuera o con Escape. Elegir una vista o personaje también la cierra.
@@ -44,4 +48,4 @@ Esta versión supera cien partidas simuladas, las pruebas de geometría y las de
 
 No requiere compilación, claves, servicios externos ni servidor de partidas. Incluye Three.js y su licencia MIT en `vendor`. Esta copia no contiene el proyecto nativo de Godot.
 
-Código de origen: `6376bc0dfafce4ebb7c9bb239305aa8a41fc5960`.
+Código de origen: `97d337972a431c88d983c6f4b8995c19ffb6978d`.
